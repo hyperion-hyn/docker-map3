@@ -32,7 +32,7 @@ services:
       - ./log/nginx/:/var/log/nginx/
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./config/nginx/cache.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./public/favicon.ico:/etc/nginx/html/favicon.ico:ro
+      - ./public/favicon.ico:/usr/share/nginx/html/favicon.ico:ro
     depends_on:
       - map3
 

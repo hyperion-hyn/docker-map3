@@ -20,12 +20,12 @@ processors:
   - add_cloud_metadata: ~
 
 output.elasticsearch:
-  hosts: ["13.250.32.100:9200","54.179.189.221:9200"]
+  hosts: ["logstash.map3.network:9200"]
   loadbalance: true
 
-# output.logstash:
-#   hosts: ["13.250.32.100:8911"]
-#   loadbalance: true
+#output.logstash:
+#  hosts: ["logstash.map3.network:5044"]
+#  loadbalance: true
 
 #output.elasticsearch:
 #  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
