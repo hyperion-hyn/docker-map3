@@ -1,0 +1,17 @@
+{
+  "server": {
+    "version": "v0.1.0",
+    "apiversion": "v1",
+    "env": "test",
+    "host": "",
+    "port": "6001"
+  },
+  "db": {
+    "type": "mbtiles",
+    "path": "./data/planet.mbtiles"
+  },
+  "logging": {
+    "loglevel": "info",
+    "logpath": "./log"
+  }
+}
