@@ -1,0 +1,85 @@
+# refer: https://github.com/elastic/examples/tree/master/Miscellaneous/docker/full_stack_example
+
+version: "2.1"
+
+services:
+  pause:
+    image: alpine:latest
+    restart: always
+    ports:
+      - 80:80
+      - 6001:6001
+    command: ["sh", "-c", "tail -f /dev/null"]
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    network_mode: "service:pause"
+    command: ["nginx", "-g", "daemon off;"]
+    volumes:
+      #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
+      - ./log/nginx/:/var/log/nginx/
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/cache.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./public/favicon.ico:/usr/share/nginx/html/favicon.ico:ro
+
+  #Filebeat container
+  filebeat:
+    user: root
+    image: docker.elastic.co/beats/filebeat:6.5.4
+    network_mode: "service:pause"
+    volumes:
+      #Mount the filebeat configuration so users can make edit
+      - ./config/beats/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./config/beats/filebeat/modules.d/:/usr/share/filebeat/modules.d/:ro
+      - ./config/beats/filebeat/default.json:/usr/share/filebeat/module/nginx/access/ingest/default.json:ro
+      #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
+      - fbdata:/usr/share/filebeat/data/
+      #Mount nginx log directory
+      - ./log/nginx/:/var/log/nginx/
+      #Allows us to report on docker from the hosts information
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: sh -c "filebeat -e --strict.perms=false -E name=`curl -s http://whatismyip.akamai.com/`"
+    restart: on-failure
+    depends_on:
+      - nginx
+
+  #Metricbeat container
+  metricbeat:
+    user: root
+    image: docker.elastic.co/beats/metricbeat:6.5.4
+    network_mode: "service:pause"
+    volumes:
+      #Mount the metricbeat configuration so users can make edit
+      - ./config/beats/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+      #Mount the modules.d directory into the container. This allows user to potentially make changes to the modules and they will be dynamically loaded.
+      - ./config/beats/metricbeat/modules.d/:/usr/share/metricbeat/modules.d/:ro
+      #The commented sections below enable Metricbeat to monitor the Docker host rather than the Metricbeat container. These are used by the system module.
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      #Allows us to report on docker from the hosts information
+      - /var/run/docker.sock:/var/run/docker.sock
+      #We mount the host filesystem so we can report on disk usage with the system module
+      - /:/hostfs:ro
+    command: sh -c "metricbeat -e --strict.perms=false -system.hostfs=/hostfs -E name=`curl -s http://whatismyip.akamai.com/`"
+    restart: on-failure
+    depends_on:
+      #wait for the these services to come up. This ensures the logs are available and ES exists for indexing
+      - nginx
+
+  logrotate:
+    image: blacklabelops/logrotate:latest
+    restart: always
+    network_mode: "service:pause"
+    environment: 
+      - LOGS_DIRECTORIES=/var/log/nginx/ 
+      - LOGROTATE_INTERVAL=daily
+      - LOGROTATE_COPIES=7
+      - LOGROTATE_SIZE=500M
+    volumes:
+      - ./log/nginx/:/var/log/nginx/
+
+volumes:
+  #Filebeat data i.e. registry file
+  fbdata:
+    driver: local

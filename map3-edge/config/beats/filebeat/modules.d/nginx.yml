@@ -1,0 +1,29 @@
+# Module: nginx
+# Docs: https://www.elastic.co/guide/en/beats/filebeat/master/filebeat-module-nginx.html
+
+- module: nginx
+  # Access logs
+  access:
+    enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+
+    processors:
+    - dissect:
+        tokenizer: "/v1/api/tile/%{tile.x}/%{tile.y}/%{tile.z}.pbf%{}"
+        field: "nginx.access.url"
+        target_prefix: "dissect"
+        when:
+          regexp:
+            nginx.access.url: "/v1/api/tile/[0-9]+/[0-9]+/[0-9]+.pbf.*"
+
+  # Error logs
+  error:
+    enabled: true
+
+    # Set custom paths for the log files. If left empty,
+    # Filebeat will choose the paths depending on your OS.
+    #var.paths:
+  
