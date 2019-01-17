@@ -32,7 +32,6 @@ services:
       #Mount the filebeat configuration so users can make edit
       - ./config/beats/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - ./config/beats/filebeat/modules.d/:/usr/share/filebeat/modules.d/:ro
-      - ./config/beats/filebeat/default.json:/usr/share/filebeat/module/nginx/access/ingest/default.json:ro
       #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
       - fbdata:/usr/share/filebeat/data/
       #Mount nginx log directory
