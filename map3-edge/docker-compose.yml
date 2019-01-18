@@ -39,6 +39,11 @@ services:
     volumes: 
       - influxdb_data:/var/lib/influxdb
       - ./config/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://127.0.0.1:8086/ping"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
 
   telegraf:
     image: telegraf:1.9-alpine
