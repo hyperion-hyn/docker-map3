@@ -30,7 +30,7 @@ services:
     restart: always
     network_mode: "service:pause"
     environment: 
-      - CRON_STRINGS=* * * * * root wget --quiet -O - --method=POST http://node-registry.map3.network/tile/online
+      - CRON_STRINGS=* * * * * wget --quiet -O - --method=POST http://node-registry.map3.network/tile/online
 
   influxdb:
     image: influxdb:1.7-alpine
