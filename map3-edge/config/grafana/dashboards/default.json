@@ -297,6 +297,7 @@
     "dashLength": 10,
     "dashes": false,
     "datasource": "InfluxDB",
+      "decimals": 0,
     "fill": 1,
     "gridPos": {
       "h": 9,
@@ -328,7 +329,7 @@
     "stack": false,
     "steppedLine": false,
     "targets": [{
-      "alias": "number of requests",
+      "alias": "Number of Requests",
       "groupBy": [],
       "hide": false,
       "measurement": "nginx",
@@ -338,15 +339,13 @@
       "resultFormat": "time_series",
       "select": [
         [{
+          "type": "field",
           "params": [
             "requests"
-          ],
-          "type": "field"
+          ]
         }, {
-          "params": [
-            "10s"
-          ],
-          "type": "non_negative_derivative"
+          "type": "non_negative_difference",
+          "params": []
         }]
       ],
       "tags": []
@@ -355,7 +354,7 @@
     "timeFrom": null,
     "timeRegions": [],
     "timeShift": null,
-    "title": "MAP REQUESTS",
+    "title": "REQUESTS",
     "tooltip": {
       "shared": true,
       "sort": 0,
@@ -428,7 +427,7 @@
     ]
   },
   "timezone": "",
-  "title": "MAP NODE DASHBOARD",
-  "uid": "VZWyVAQmk",
+  "title": "Map3 Local Node",
+  "uid": "Hyperion",
   "version": 1
 }
