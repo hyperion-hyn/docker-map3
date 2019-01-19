@@ -92,7 +92,7 @@
     "thresholds": "",
     "title": "TOTAL NUMBER OF REQUESTS SERVED",
     "type": "singlestat",
-    "valueFontSize": "80%",
+    "valueFontSize": "100%",
     "valueMaps": [{
       "op": "=",
       "text": "N/A",
@@ -185,7 +185,7 @@
     "timeFrom": null,
     "title": "CPU USAGE",
     "type": "singlestat",
-    "valueFontSize": "80%",
+    "valueFontSize": "70%",
     "valueMaps": [{
       "op": "=",
       "text": "很好",
@@ -284,7 +284,7 @@
     "thresholds": "50,80",
     "title": "MEMORY USAGE",
     "type": "singlestat",
-    "valueFontSize": "80%",
+    "valueFontSize": "70%",
     "valueMaps": [{
       "op": "=",
       "text": "N/A",
@@ -399,8 +399,8 @@
     "list": []
   },
   "time": {
-    "from": "2019-01-18T06:06:07.782Z",
-    "to": "2019-01-18T07:57:30.196Z"
+    "from": "now-6h",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -430,5 +430,5 @@
   "timezone": "",
   "title": "MAP NODE DASHBOARD",
   "uid": "VZWyVAQmk",
-  "version": 8
+  "version": 1
 }

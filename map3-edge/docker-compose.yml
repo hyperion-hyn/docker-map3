@@ -59,7 +59,7 @@ services:
     restart: always
     network_mode: "service:pause"
     volumes: 
-      - ./config/grafana/conf:/etc/share/grafana/conf:ro
+      - ./config/grafana/conf:/usr/share/grafana/conf:ro
       - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
     environment: 
       - GF_PATHS_PROVISIONING=/usr/share/grafana/conf/provisioning
