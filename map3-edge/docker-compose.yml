@@ -60,9 +60,14 @@ services:
     image: grafana/grafana:5.4.3
     restart: always
     network_mode: "service:pause"
+    entrypoint: /entry.sh
     volumes: 
+      - ./config/grafana/entry.sh:/entry.sh:ro
       - ./config/grafana/conf:/usr/share/grafana/conf:ro
       - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./config/grafana/img/fav32.png:/usr/share/grafana/public/img/fav32.png:ro
+      - ./config/grafana/img/hyn_logo.svg:/usr/share/grafana/public/img/grafana_icon.svg:ro
+      - ./config/grafana/img/map3_typelogo.svg:/usr/share/grafana/public/img/grafana_typelogo.svg:ro
     environment: 
       - GF_PATHS_PROVISIONING=/usr/share/grafana/conf/provisioning
     depends_on: 
