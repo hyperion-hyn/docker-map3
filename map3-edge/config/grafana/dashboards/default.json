@@ -346,7 +346,7 @@
           "params": [
             "10s"
           ],
-          "type": "derivative"
+          "type": "non_negative_derivative"
         }]
       ],
       "tags": []
