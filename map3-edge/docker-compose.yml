@@ -67,10 +67,11 @@ services:
     restart: always
     volumes: 
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
+      - ./config/cron/update-node-info.sh:/update-node-info.sh
     environment: 
       CRON_STRINGS: |
         * * * * * wget --quiet -O - --method=POST http://node-registry.map3.network/tile/online
-        * * * * * IP=`wget -q -O -  http://whatismyip.akamai.com/` && (cat /usr/share/nginx/html/node-info.json | sed -e "s,\(\"nodePublicIp\": \)\"[^\"]*\",\\1\"$$IP\",g" -e "s,\(http://\)[^/]*,\\1$$IP,g" > /tmp/node-info.json && cat /tmp/node-info.json > /usr/share/nginx/html/node-info.json)
+        * * * * * /update-node-info.sh
 
   influxdb:
     image: influxdb:1.7-alpine
