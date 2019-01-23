@@ -28,7 +28,7 @@ services:
   titan:
     image: nginx:1.15.8-alpine
     restart: always
-    command: ["/launch.sh"]
+    command: ["nginx", "-g", "daemon off;"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/titan/:/var/log/nginx/
@@ -65,8 +65,12 @@ services:
   registry:
     image: arraylabs/docker-alpine-cron:latest
     restart: always
+    volumes: 
+      - ./public/node-info.json:/usr/share/nginx/html/node-info.json
     environment: 
-      - CRON_STRINGS=* * * * * wget --quiet -O - --method=POST http://node-registry.map3.network/tile/online
+      CRON_STRINGS: |
+        * * * * * wget --quiet -O - --method=POST http://node-registry.map3.network/tile/online
+        * * * * * IP=`wget -q -O -  http://whatismyip.akamai.com/` && (cat /usr/share/nginx/html/node-info.json | sed -e "s,\(\"nodePublicIp\": \)\"[^\"]*\",\\1\"$$IP\",g" -e "s,\(http://\)[^/]*,\\1$$IP,g" > /tmp/node-info.json && cat /tmp/node-info.json > /usr/share/nginx/html/node-info.json)
 
   influxdb:
     image: influxdb:1.7-alpine
