@@ -43,6 +43,8 @@ services:
         timeout: 5s
         retries: 5
         start_period: 5s
+    depends_on: 
+      - registry
 
   reverse-proxy:
     image: nginx:1.15.8-alpine
