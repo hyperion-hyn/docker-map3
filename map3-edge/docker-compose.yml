@@ -65,8 +65,10 @@ services:
   registry:
     image: arraylabs/docker-alpine-cron:latest
     restart: always
+    entrypoint: /entry.sh
     volumes: 
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
+      - ./config/cron/entry.sh:/entry.sh
       - ./config/cron/update-node-info.sh:/update-node-info.sh
     environment: 
       CRON_STRINGS: |
