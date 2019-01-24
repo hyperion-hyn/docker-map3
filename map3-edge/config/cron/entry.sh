@@ -1,4 +1,4 @@
 #!/bin/sh
-
+set -e
 /update-node-info.sh
-/docker-entry.sh "$@"
+exec /docker-entry.sh "$@"
