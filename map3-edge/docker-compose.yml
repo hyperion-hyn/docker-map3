@@ -164,7 +164,7 @@ services:
     image: blacklabelops/logrotate:latest
     restart: always
     environment: 
-      - LOGS_DIRECTORIES=/var/log/nginx/ 
+      - LOGS_DIRECTORIES=/var/log/nginx/  /var/log/titan/ /var/log/reverse-proxy/
       - LOGROTATE_INTERVAL=daily
       - LOGROTATE_COPIES=7
       - LOGROTATE_SIZE=500M
