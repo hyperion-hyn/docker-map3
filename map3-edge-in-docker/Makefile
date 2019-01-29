@@ -1,4 +1,6 @@
 
+.PHONY: build deploy
+
 build:
 	docker-compose build
 
