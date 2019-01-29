@@ -115,6 +115,7 @@ services:
       - ./config/grafana/img/map3_typelogo.svg:/usr/share/grafana/public/img/grafana_typelogo.svg:ro
     environment: 
       - GF_PATHS_PROVISIONING=/usr/share/grafana/conf/provisioning
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
     depends_on: 
       - telegraf
 
@@ -172,6 +173,15 @@ services:
       - ./log/map3/:/var/log/map3/
       - ./log/titan/:/var/log/titan/
       - ./log/reverse-proxy/:/var/log/reverse-proxy/
+
+  geostat:
+    image: zouguangxian/geostat
+    build:
+      context: ./docker/geostat
+    restart: always
+    volumes:
+      - ./log/map3/:/var/log/map3/
+      - ./config/geostat/settings.ini:/opt/geostat/settings.ini:ro
 
 volumes:
   #Filebeat data i.e. registry file

@@ -1,6 +1,11 @@
 #!/bin/sh
 
 IP=`wget -q -O -  http://whatismyip.akamai.com/`
+
+if ! wget -O /dev/null --tries 1 --timeout 1 http://$IP ; then
+  IP='127.0.0.1'
+fi
+
 (cat <<EOF
 {
   "nodePublicIp": "113.66.217.71",
