@@ -2,3 +2,4 @@ map3-core/data
 map3-edge/log/nginx/access.log
 map3-edge/log/nginx/error.log
 map3-edge/log
+map3-edge/secrets
