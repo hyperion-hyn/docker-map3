@@ -1,0 +1,232 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+
+    "Description": "AWS CloudFormation Template for Hyperion map3 edge node.",
+
+    "Parameters": {
+        "KeyName": {
+            "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance. If not, create one.",
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "ConstraintDescription": "must be the name of an existing EC2 KeyPair. If not, create one."
+        },
+
+        "InstanceType": {
+            "Description": "Map3 edge node EC2 instance type",
+            "Type": "String",
+            "Default": "t2.micro",
+            "AllowedValues": ["t2.nano", "t2.micro", "t2.small", "t2.medium", "t2.large", "m1.small", "m1.medium", "m1.large", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "m3.medium", "m3.large", "m3.xlarge", "m3.2xlarge"],
+            "ConstraintDescription": "must be a valid EC2 instance type."
+        },
+
+        "SSHLocation": {
+            "Description": "The IP address range that can be used to SSH to the EC2 instances",
+            "Type": "String",
+            "MinLength": "9",
+            "MaxLength": "18",
+            "Default": "0.0.0.0/0",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+        }
+    },
+
+    "Mappings": {
+        "AWSInstanceType2Arch": {
+            "t2.nano": {
+                "Arch": "HVM64"
+            },
+            "t2.micro": {
+                "Arch": "HVM64"
+            },
+            "t2.small": {
+                "Arch": "HVM64"
+            },
+            "t2.medium": {
+                "Arch": "HVM64"
+            },
+            "t2.large": {
+                "Arch": "HVM64"
+            },
+            "m1.small": {
+                "Arch": "HVM64"
+            },
+            "m1.medium": {
+                "Arch": "HVM64"
+            },
+            "m1.large": {
+                "Arch": "HVM64"
+            },
+            "m1.xlarge": {
+                "Arch": "HVM64"
+            },
+            "m2.xlarge": {
+                "Arch": "HVM64"
+            },
+            "m2.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "m2.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "m3.medium": {
+                "Arch": "HVM64"
+            },
+            "m3.large": {
+                "Arch": "HVM64"
+            },
+            "m3.xlarge": {
+                "Arch": "HVM64"
+            },
+            "m3.2xlarge": {
+                "Arch": "HVM64"
+            }
+        },
+        "AWSRegionArch2AMI": {
+            "us-east-1": {
+                "HVM64": "ami-064e9452cfec3e350"
+            },
+            "us-east-2": {
+                "HVM64": "ami-0ca84450130bce277"
+            },
+            "us-west-1": {
+                "HVM64": "ami-020d739d81c00daaa"
+            },
+            "us-west-2": {
+                "HVM64": "ami-0d953072c7e7cf368"
+            },
+            "ap-south-1": {
+                "HVM64": "ami-0c6c1402a3cbd7ad2"
+            },
+            "ap-northeast-2": {
+                "HVM64": "ami-020fb4c8255194355"
+            },
+            "eu-west-1": {
+                "HVM64": "ami-00e4e4eea0651fd8e"
+            },
+            "eu-west-2": {
+                "HVM64": "ami-0c5aed910558caf40"
+            },
+            "eu-west-3": {
+                "HVM64": "ami-047e32766ad4b8e3f"
+            },
+            "ap-southeast-1": {
+                "HVM64": "ami-0385edf0a6904a496"
+            },
+            "ap-northeast-1": {
+                "HVM64": "ami-0195b7a9a587f36e4"
+            },
+            "ca-central-1": {
+                "HVM64": "ami-024e3ec5782abb126"
+            },
+            "ap-southeast-2": {
+                "HVM64": "ami-0431b8079867604ca"
+            },
+            "sa-east-1": {
+                "HVM64": "ami-0cb0c8d633ac31c7c"
+            },
+            "eu-central-1": {
+                "HVM64": "ami-06d1acbf7044cd3a6"
+            },
+            "eu-north-1": {
+                "HVM64": "ami-0aea429b4d7821e9e"
+            }
+        }
+    },
+
+    "Resources": {
+        "EC2Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "InstanceType": {
+                    "Ref": "InstanceType"
+                },
+                "SecurityGroups": [{
+                    "Ref": "InstanceSecurityGroup"
+                }],
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "ImageId": {
+                    "Fn::FindInMap": ["AWSRegionArch2AMI", {
+                            "Ref": "AWS::Region"
+                        },
+                        {
+                            "Fn::FindInMap": ["AWSInstanceType2Arch", {
+                                "Ref": "InstanceType"
+                            }, "Arch"]
+                        }
+                    ]
+                },
+                "Tags": [{
+                    "Key": "Name",
+                    "Value": "Map3 edge node EC2"
+                }]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "17d85fd0-99f0-41fd-b28d-6fee6d57e71b"
+                }
+            }
+        },
+
+        "InstanceSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Enable SSH access via port 22",
+                "SecurityGroupIngress": [{
+                    "IpProtocol": "tcp",
+                    "FromPort": "22",
+                    "ToPort": "22",
+                    "CidrIp": {
+                        "Ref": "SSHLocation"
+                    }
+                }, {
+                    "IpProtocol": "tcp",
+                    "FromPort": "80",
+                    "ToPort": "80",
+                    "CidrIp": "0.0.0.0/0"
+                }, {
+                    "IpProtocol": "tcp",
+                    "FromPort": "3000",
+                    "ToPort": "3000",
+                    "CidrIp": "0.0.0.0/0"
+                }],
+                "Tags": [{
+                    "Key": "Name",
+                    "Value": "Map3 edge node security group"
+                }]
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "17d85fd0-99f0-41fd-b28d-6fee6d57e71b"
+                }
+            }
+        }
+    },
+
+    "Outputs": {
+        "InstanceId": {
+            "Description": "InstanceId of the newly created EC2 instance",
+            "Value": {
+                "Ref": "EC2Instance"
+            }
+        },
+        "AZ": {
+            "Description": "Availability Zone of the newly created EC2 instance",
+            "Value": {
+                "Fn::GetAtt": ["EC2Instance", "AvailabilityZone"]
+            }
+        },
+        "PublicDNS": {
+            "Description": "Public DNSName of the newly created EC2 instance",
+            "Value": {
+                "Fn::GetAtt": ["EC2Instance", "PublicDnsName"]
+            }
+        },
+        "PublicIP": {
+            "Description": "Public IP address of the newly created EC2 instance",
+            "Value": {
+                "Fn::GetAtt": ["EC2Instance", "PublicIp"]
+            }
+        }
+    }
+}
