@@ -9,21 +9,21 @@ services:
     command: ["sh", "-c", "tail -f /dev/null"]
 
   map3:
-    image: nginx:1.15.8-alpine
+    image: map3/map3
+    build:
+      context: ./docker/map3
     restart: always
     command: ["nginx", "-g", "daemon off;"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/map3/:/var/log/nginx/
-      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./config/nginx/cache.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./public/favicon.ico:/usr/share/nginx/html/favicon.ico:ro
     healthcheck:
-        test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
-        start_period: 5s
+      test:
+        ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   titan:
     image: nginx:1.15.8-alpine
@@ -38,18 +38,19 @@ services:
       - ./public/:/usr/share/nginx/html/:ro
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
     healthcheck:
-        test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
-        start_period: 5s
-    depends_on: 
+      test:
+        ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    depends_on:
       - registry
 
   reverse-proxy:
     image: nginx:1.15.8-alpine
     restart: always
-    ports: 
+    ports:
       - 80:80
       - 443:443
     command: ["nginx", "-g", "daemon off;"]
@@ -68,13 +69,13 @@ services:
   registry:
     image: arraylabs/docker-alpine-cron:latest
     restart: always
-    entrypoint: [ "/entry.sh" ]
+    entrypoint: ["/entry.sh"]
     command: ["/docker-cmd.sh"]
-    volumes: 
+    volumes:
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
       - ./config/cron/entry.sh:/entry.sh
       - ./config/cron/update-node-info.sh:/update-node-info.sh
-    environment: 
+    environment:
       CRON_STRINGS: |
         * * * * * wget --quiet -O - --method=POST http://node-registry.map3.network/tile/online
         * * * * * /update-node-info.sh
@@ -82,42 +83,42 @@ services:
   influxdb:
     image: influxdb:1.7-alpine
     restart: always
-    volumes: 
+    volumes:
       - influxdb_data:/var/lib/influxdb
       - ./config/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     healthcheck:
-        test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8086/ping"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
-        start_period: 5s
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8086/ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   telegraf:
     image: telegraf:1.9-alpine
     restart: always
-    volumes: 
+    volumes:
       - ./config/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-    depends_on: 
+    depends_on:
       influxdb:
         condition: service_healthy
 
   grafana:
     image: grafana/grafana:5.4.3
     restart: always
-    ports: 
+    ports:
       - 3000:3000 # grafana
     entrypoint: /entry.sh
-    volumes: 
+    volumes:
       - ./config/grafana/entry.sh:/entry.sh:ro
       - ./config/grafana/conf:/usr/share/grafana/conf:ro
       - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
       - ./config/grafana/img/fav32.png:/usr/share/grafana/public/img/fav32.png:ro
       - ./config/grafana/img/hyn_logo.svg:/usr/share/grafana/public/img/grafana_icon.svg:ro
       - ./config/grafana/img/map3_typelogo.svg:/usr/share/grafana/public/img/grafana_typelogo.svg:ro
-    environment: 
+    environment:
       - GF_PATHS_PROVISIONING=/usr/share/grafana/conf/provisioning
       - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
-    depends_on: 
+    depends_on:
       - telegraf
 
   #Filebeat container
@@ -165,7 +166,7 @@ services:
   logrotate:
     image: blacklabelops/logrotate:latest
     restart: always
-    environment: 
+    environment:
       - LOGS_DIRECTORIES=/var/log/nginx/  /var/log/titan/ /var/log/reverse-proxy/
       - LOGROTATE_INTERVAL=daily
       - LOGROTATE_COPIES=7
