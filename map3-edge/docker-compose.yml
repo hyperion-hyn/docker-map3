@@ -34,6 +34,7 @@ services:
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/titan/:/var/log/nginx/
+      - ./public/node-info.json:/usr/share/nginx/html/node-info.json
     healthcheck:
       test:
         ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
