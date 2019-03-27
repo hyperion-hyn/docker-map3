@@ -162,13 +162,12 @@ services:
       - ./log/reverse-proxy/:/var/log/reverse-proxy/
 
   geostat:
-    image: zouguangxian/geostat
+    image: map3/geostat
     build:
       context: ./docker/geostat
     restart: always
     volumes:
       - ./log/map3/:/var/log/map3/
-      - ./config/geostat/settings.ini:/opt/geostat/settings.ini:ro
 
 volumes:
   #Filebeat data i.e. registry file
