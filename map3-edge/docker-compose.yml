@@ -169,6 +169,21 @@ services:
     volumes:
       - ./log/map3/:/var/log/map3/
 
+  ouroboros:
+    container_name: ouroboros
+    hostname: ouroboros
+    image: pyouroboros/ouroboros
+    environment:
+      - CLEANUP=true
+      - INTERVAL=100
+      - LOG_LEVEL=INFO
+      - SELF_UPDATE=true
+      - IGNORE=mongo postgres mariadb
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   #Filebeat data i.e. registry file
   fbdata:
