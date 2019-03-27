@@ -78,11 +78,12 @@ services:
         * * * * * /update-node-info.sh
 
   influxdb:
-    image: influxdb:1.7-alpine
+    image: map3/influxdb
+    build:
+      context: ./docker/influxdb
     restart: always
     volumes:
       - influxdb_data:/var/lib/influxdb
-      - ./config/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8086/ping"]
       interval: 5s
