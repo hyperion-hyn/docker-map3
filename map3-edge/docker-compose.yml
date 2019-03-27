@@ -63,14 +63,14 @@ services:
         condition: service_healthy
 
   registry:
-    image: arraylabs/docker-alpine-cron:latest
+    image: map3/registry
+    build:
+      context: ./docker/registry
     restart: always
     entrypoint: ["/entry.sh"]
     command: ["/docker-cmd.sh"]
     volumes:
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
-      - ./config/cron/entry.sh:/entry.sh
-      - ./config/cron/update-node-info.sh:/update-node-info.sh
     environment:
       CRON_STRINGS: |
         * * * * * wget --quiet -O - --method=POST http://node-registry.map3.network/tile/online
