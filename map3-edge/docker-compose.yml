@@ -134,12 +134,10 @@ services:
   #Metricbeat container
   metricbeat:
     user: root
-    image: docker.elastic.co/beats/metricbeat:6.5.4
+    image: map3/metricbeat
+    build:
+      context: ./docker/metricbeat
     volumes:
-      #Mount the metricbeat configuration so users can make edit
-      - ./config/beats/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
-      #Mount the modules.d directory into the container. This allows user to potentially make changes to the modules and they will be dynamically loaded.
-      - ./config/beats/metricbeat/modules.d/:/usr/share/metricbeat/modules.d/:ro
       #The commented sections below enable Metricbeat to monitor the Docker host rather than the Metricbeat container. These are used by the system module.
       - /proc:/hostfs/proc:ro
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
