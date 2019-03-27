@@ -77,8 +77,7 @@
           "Ref": "InstanceLoginPassword"
         },
         "UserData": {
-          "Fn::Replace": [
-            {
+          "Fn::Replace": [{
               "ros-notify": {
                 "Fn::GetAtt": ["InstallConditionHandle", "CurlCli"]
               }
@@ -112,9 +111,6 @@
                   "wget http://map3.oss-cn-hongkong.aliyuncs.com/map3-edge.zip \n",
                   "unzip map3-edge.zip \n",
                   "cd /opt/map3-edge \n",
-                  "echo \"repace filebeat docker image repo\" >> /tmp/log.txt \n",
-                  "chmod +x path_aliyun.sh \n",
-                  "./path_aliyun.sh \n",
                   "echo \"do docker-compose up\" >> /tmp/log.txt \n",
                   "docker-compose up -d >> /tmp/log.txt \n",
                   "echo \"do auto start process\" >> /tmp/log.txt \n",
@@ -141,24 +137,20 @@
           "Ref": "Map3EdgeNodeVPC"
         },
         "SecurityGroupName": "map3-edge-node-SG",
-        "SecurityGroupIngress": [
-          {
-            "PortRange": "-1/-1",
-            "Priority": 1,
-            "SourceCidrIp": "0.0.0.0/0",
-            "IpProtocol": "all",
-            "NicType": "intranet"
-          }
-        ],
-        "SecurityGroupEgress": [
-          {
-            "PortRange": "-1/-1",
-            "Priority": 1,
-            "IpProtocol": "all",
-            "DestCidrIp": "0.0.0.0/0",
-            "NicType": "intranet"
-          }
-        ]
+        "SecurityGroupIngress": [{
+          "PortRange": "-1/-1",
+          "Priority": 1,
+          "SourceCidrIp": "0.0.0.0/0",
+          "IpProtocol": "all",
+          "NicType": "intranet"
+        }],
+        "SecurityGroupEgress": [{
+          "PortRange": "-1/-1",
+          "Priority": 1,
+          "IpProtocol": "all",
+          "DestCidrIp": "0.0.0.0/0",
+          "NicType": "intranet"
+        }]
       }
     },
     "Map3EdgeNodeVPC": {
