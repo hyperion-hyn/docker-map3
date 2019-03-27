@@ -175,7 +175,7 @@ services:
     image: pyouroboros/ouroboros
     environment:
       - CLEANUP=true
-      - INTERVAL=100
+      - INTERVAL=300
       - LOG_LEVEL=INFO
       - SELF_UPDATE=true
       - IGNORE=mongo postgres mariadb
