@@ -92,10 +92,10 @@ services:
       start_period: 5s
 
   telegraf:
-    image: telegraf:1.9-alpine
+    image: map3/telegraf
+    build:
+      context: ./docker/telegraf
     restart: always
-    volumes:
-      - ./config/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
       influxdb:
         condition: service_healthy
