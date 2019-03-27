@@ -156,7 +156,7 @@ services:
     build:
       context: ./docker/logrotate
     restart: always
-   volumes:
+    volumes:
       - ./log/map3/:/var/log/map3/
       - ./log/titan/:/var/log/titan/
       - ./log/reverse-proxy/:/var/log/reverse-proxy/
@@ -174,4 +174,6 @@ volumes:
   fbdata:
     driver: local
   influxdb_data:
+    driver: local
+  grafana_data:
     driver: local
