@@ -152,14 +152,11 @@ services:
       - map3
 
   logrotate:
-    image: blacklabelops/logrotate:latest
+    image: map3/logrotate
+    build:
+      context: ./docker/logrotate
     restart: always
-    environment:
-      - LOGS_DIRECTORIES=/var/log/nginx/  /var/log/titan/ /var/log/reverse-proxy/
-      - LOGROTATE_INTERVAL=daily
-      - LOGROTATE_COPIES=7
-      - LOGROTATE_SIZE=500M
-    volumes:
+   volumes:
       - ./log/map3/:/var/log/map3/
       - ./log/titan/:/var/log/titan/
       - ./log/reverse-proxy/:/var/log/reverse-proxy/
