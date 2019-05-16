@@ -9,130 +9,117 @@ services:
     command: ["sh", "-c", "tail -f /dev/null"]
 
   map3:
-    image: nginx:1.15.8-alpine
+    image: map3/map3
+    build:
+      context: ./docker/map3
     restart: always
     command: ["nginx", "-g", "daemon off;"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/map3/:/var/log/nginx/
-      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./config/nginx/cache.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./public/favicon.ico:/usr/share/nginx/html/favicon.ico:ro
-      - ./secrets/_tile.map3.network.pem:/etc/ssl/certs/ca-certificates.crt:ro
-      - ./secrets/private-key.pem:/etc/ssl/private/private-key.pem:ro
     healthcheck:
-        test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
-        start_period: 5s
+      test:
+        ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   titan:
-    image: nginx:1.15.8-alpine
+    image: map3/titan
+    build:
+      context: ./docker/titan
     restart: always
     command: ["nginx", "-g", "daemon off;"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/titan/:/var/log/nginx/
-      - ./config/titan/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./config/titan/titan.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./config/titan/launch.sh:/launch.sh:ro
-      - ./public/:/usr/share/nginx/html/:ro
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
     healthcheck:
-        test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
-        start_period: 5s
-    depends_on: 
+      test:
+        ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    depends_on:
       - registry
 
   reverse-proxy:
-    image: nginx:1.15.8-alpine
+    image: map3/reverse-proxy
+    build:
+      context: ./docker/reverse-proxy
     restart: always
-    ports: 
+    ports:
       - 80:80
       - 443:443
     command: ["nginx", "-g", "daemon off;"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/reverse-proxy/:/var/log/nginx/
-      - ./config/reverse-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./config/reverse-proxy/proxy.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./public/favicon.ico:/usr/share/nginx/html/favicon.ico:ro
-      - ./secrets/_tile.map3.network.pem:/etc/ssl/certs/ca-certificates.crt:ro
-      - ./secrets/private-key.pem:/etc/ssl/private/private-key.pem:ro
-    depends_on: 
+    depends_on:
       map3:
         condition: service_healthy
       titan:
         condition: service_healthy
 
   registry:
-    image: arraylabs/docker-alpine-cron:latest
+    image: map3/registry
+    build:
+      context: ./docker/registry
     restart: always
-    entrypoint: [ "/entry.sh" ]
+    entrypoint: ["/entry.sh"]
     command: ["/docker-cmd.sh"]
-    volumes: 
+    volumes:
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
-      - ./config/cron/entry.sh:/entry.sh
-      - ./config/cron/update-node-info.sh:/update-node-info.sh
-    environment: 
+    environment:
       CRON_STRINGS: |
         * * * * * wget --quiet -O - --method=POST http://node-registry.map3.network/tile/online
         * * * * * /update-node-info.sh
 
   influxdb:
-    image: influxdb:1.7-alpine
+    image: map3/influxdb
+    build:
+      context: ./docker/influxdb
     restart: always
-    volumes: 
+    volumes:
       - influxdb_data:/var/lib/influxdb
-      - ./config/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
     healthcheck:
-        test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8086/ping"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
-        start_period: 5s
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8086/ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   telegraf:
-    image: telegraf:1.9-alpine
+    image: map3/telegraf
+    build:
+      context: ./docker/telegraf
     restart: always
-    volumes: 
-      - ./config/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-    depends_on: 
+    depends_on:
       influxdb:
         condition: service_healthy
 
   grafana:
-    image: grafana/grafana:5.4.3
+    image: map3/grafana
+    build:
+      context: ./docker/grafana
     restart: always
-    ports: 
+    ports:
       - 3000:3000 # grafana
     entrypoint: /entry.sh
-    volumes: 
-      - ./config/grafana/entry.sh:/entry.sh:ro
-      - ./config/grafana/conf:/usr/share/grafana/conf:ro
-      - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - ./config/grafana/img/fav32.png:/usr/share/grafana/public/img/fav32.png:ro
-      - ./config/grafana/img/hyn_logo.svg:/usr/share/grafana/public/img/grafana_icon.svg:ro
-      - ./config/grafana/img/map3_typelogo.svg:/usr/share/grafana/public/img/grafana_typelogo.svg:ro
-    environment: 
-      - GF_PATHS_PROVISIONING=/usr/share/grafana/conf/provisioning
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-worldmap-panel
-    depends_on: 
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
       - telegraf
 
   #Filebeat container
   filebeat:
     user: root
-    image: docker.elastic.co/beats/filebeat:6.5.4
+    image: map3/filebeat
+    build:
+      context: ./docker/filebeat
     volumes:
-      #Mount the filebeat configuration so users can make edit
-      - ./config/beats/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-      - ./config/beats/filebeat/modules.d/:/usr/share/filebeat/modules.d/:ro
-      - ./config/beats/filebeat/default.json:/usr/share/filebeat/module/nginx/access/ingest/default.json:ro
       #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
       - fbdata:/usr/share/filebeat/data/
       #Mount nginx log directory
@@ -147,12 +134,10 @@ services:
   #Metricbeat container
   metricbeat:
     user: root
-    image: docker.elastic.co/beats/metricbeat:6.5.4
+    image: map3/metricbeat
+    build:
+      context: ./docker/metricbeat
     volumes:
-      #Mount the metricbeat configuration so users can make edit
-      - ./config/beats/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
-      #Mount the modules.d directory into the container. This allows user to potentially make changes to the modules and they will be dynamically loaded.
-      - ./config/beats/metricbeat/modules.d/:/usr/share/metricbeat/modules.d/:ro
       #The commented sections below enable Metricbeat to monitor the Docker host rather than the Metricbeat container. These are used by the system module.
       - /proc:/hostfs/proc:ro
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
@@ -167,30 +152,43 @@ services:
       - map3
 
   logrotate:
-    image: blacklabelops/logrotate:latest
+    image: map3/logrotate
+    build:
+      context: ./docker/logrotate
     restart: always
-    environment: 
-      - LOGS_DIRECTORIES=/var/log/nginx/  /var/log/titan/ /var/log/reverse-proxy/
-      - LOGROTATE_INTERVAL=daily
-      - LOGROTATE_COPIES=7
-      - LOGROTATE_SIZE=500M
     volumes:
       - ./log/map3/:/var/log/map3/
       - ./log/titan/:/var/log/titan/
       - ./log/reverse-proxy/:/var/log/reverse-proxy/
 
   geostat:
-    image: zouguangxian/geostat
+    image: map3/geostat
     build:
       context: ./docker/geostat
     restart: always
     volumes:
       - ./log/map3/:/var/log/map3/
-      - ./config/geostat/settings.ini:/opt/geostat/settings.ini:ro
+
+  ouroboros:
+    container_name: ouroboros
+    hostname: ouroboros
+    image: pyouroboros/ouroboros
+    environment:
+      - CLEANUP=true
+      - INTERVAL=300
+      - LOG_LEVEL=INFO
+      - SELF_UPDATE=true
+      - IGNORE=mongo postgres mariadb
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   #Filebeat data i.e. registry file
   fbdata:
     driver: local
   influxdb_data:
+    driver: local
+  grafana_data:
     driver: local

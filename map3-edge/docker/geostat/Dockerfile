@@ -12,5 +12,6 @@ COPY ./rootfs/ /
 RUN cd /opt/geostat/ && pip install -r requirements.txt 
 
 COPY rootfs /
+COPY ./rootfs/config/settings.ini /opt/geostat/settings.ini
 
 ENTRYPOINT ["/init"]
