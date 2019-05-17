@@ -61,16 +61,22 @@
     }
 }
 
-edge1.tile.map3.network:443 {
+*.tile.map3.network:443 {
     import common
     import tile-edge-proxy
     import tile-edge-cache
     import tile-edge-auth
 }
 
-edge1.tile.map3.network:80 {
+*.tile.map3.network:80 {
     import common
     import tile-edge-proxy
     import tile-edge-cache
     import tile-edge-jwt-auth
+}
+
+:80 {
+    import common
+    import tile-edge-proxy
+    import tile-edge-cache
 }
