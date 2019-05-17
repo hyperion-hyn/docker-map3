@@ -46,17 +46,21 @@ services:
       - registry
 
   reverse-proxy:
-    image: map3/reverse-proxy
-    build:
-      context: ./docker/reverse-proxy
+    image: map3/caddy
     restart: always
     ports:
       - 80:80
       - 443:443
-    command: ["nginx", "-g", "daemon off;"]
+    # command: ["/usr/local/bin/caddy", "-conf", "/etc/caddy/prodcaddyfile"]
+    entrypoint:
+      - /usr/local/bin/caddy
+      - -conf
+      - /etc/caddy/prodcaddyfile
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
-      - ./log/reverse-proxy/:/var/log/nginx/
+      - ./log/reverse-proxy/:/var/log/caddy/
+      - ./docker/caddy-reverse-proxy/caddy:/etc/caddy/
+      - ./docker/caddy-reverse-proxy/public:/var/run/caddy/public_html/
     depends_on:
       map3:
         condition: service_healthy

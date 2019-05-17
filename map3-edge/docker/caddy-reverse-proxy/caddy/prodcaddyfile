@@ -1,0 +1,76 @@
+(common) {
+    root /var/run/caddy/public_html
+    index index.html
+	browse
+	gzip
+	push
+	header / Access-Control-Allow-Origin *
+	log / /var/log/caddy/access.log "{combined}" {
+		rotate_size 50  # Rotate after 50 MB
+		rotate_age  90  # Keep rotated files for 90 days
+		rotate_keep 20  # Keep at most 20 log files
+		rotate_compress # Compress rotated log files in gzip format
+		# ipmask 255.255.0.0 ffff:ffff:ffff:ff00:: #anonymied traffic
+	}
+}
+(tile-edge-proxy) {
+	proxy  /v1/api map3:80 {
+		health_check /server_status
+		health_check_interval 30s
+		health_check_timeout 60s
+	}
+
+	proxy  /v1/debug/var map3:80 {
+		health_check /server_status
+		health_check_interval 30s
+		health_check_timeout 60s
+	}
+
+	proxy / titan:80 {
+		health_check /server_status
+		health_check_interval 30s
+		health_check_timeout 60s
+	}
+}
+
+(tile-edge-cache) {
+	cache {
+		# add match_header Content-Type as pbf/svg/jpg..? according to content type
+		# add match_path? e.g. /tile
+		status_header X-Cache-Status
+		default_max_age 60m
+		# path /tmp/caddy-cache : Note: adding this cause CORS problem. Dont know why
+		# optional stale, lock,vary
+	}
+}
+
+(tile-edge-auth) {
+	tls keyless key.tile.map3.network:5001 /etc/caddy/tile-server.pem /etc/caddy/tile-ca.pem
+	jwt {
+        path /v1/api/tile/
+        publickey /etc/caddy/jwt-key.pub
+        allow ml mapstore
+    }
+}
+
+(tile-edge-jwt-auth) {
+	jwt {
+        path /v1/api/tile/
+        publickey /etc/caddy/jwt-key.pub
+        allow ml mapstore
+    }
+}
+
+edge1.tile.map3.network:443 {
+    import common
+    import tile-edge-proxy
+    import tile-edge-cache
+    import tile-edge-auth
+}
+
+edge1.tile.map3.network:80 {
+    import common
+    import tile-edge-proxy
+    import tile-edge-cache
+    import tile-edge-jwt-auth
+}
