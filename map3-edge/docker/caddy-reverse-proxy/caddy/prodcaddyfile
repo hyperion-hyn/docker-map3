@@ -48,8 +48,9 @@
 	tls keyless key.tile.map3.network:5001 /etc/caddy/tile-server.pem /etc/caddy/tile-ca.pem
 	jwt {
         path /v1/api/tile/
-        publickey /etc/caddy/jwt-key.pub
-        allow ml mapstore
+        # publickey /etc/caddy/jwt-key.pub
+        # allow ml mapstore
+		passthrough
     }
 }
 
