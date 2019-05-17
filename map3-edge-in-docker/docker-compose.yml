@@ -8,6 +8,7 @@ services:
     image: map3/deploy-edge:latest
     ports:
       - 80:80
+      - 443:443
       - 3000:3000
     restart: always
     privileged: true

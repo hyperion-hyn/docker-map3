@@ -7,13 +7,14 @@ RUN set -eux; \
     && tar xzf /tmp/s6-overlay-amd64.tar.gz -C / \
     && rm /tmp/*
 
-RUN apk add --no-cache py-pip 
-RUN pip install --upgrade pip && pip install docker-compose
+
+RUN apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+RUN pip install docker-compose
 
 COPY ./map3-edge-in-docker/rootfs/ /
 
 COPY ./map3-edge /src
 
-EXPOSE 80 3000
+EXPOSE 80 443 3000
 
 ENTRYPOINT [ "/init" ]

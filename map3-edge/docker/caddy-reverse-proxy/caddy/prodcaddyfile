@@ -56,8 +56,9 @@
 (tile-edge-jwt-auth) {
 	jwt {
         path /v1/api/tile/
-        publickey /etc/caddy/jwt-key.pub
-        allow ml mapstore
+        # publickey /etc/caddy/jwt-key.pub
+        # allow ml mapstore
+		passthrough
     }
 }
 
