@@ -78,7 +78,7 @@ services:
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
     environment:
       CRON_STRINGS: |
-        * * * * * wget --quiet -O - --method=POST --post-data="keyless=true" https://registry.tile.map3.network/tile/online
+        * * * * * wget --quiet -O - --method=POST --body-data="keyless=true" https://registry.tile.map3.network/tile/online
         * * * * * /update-node-info.sh
 
   influxdb:
