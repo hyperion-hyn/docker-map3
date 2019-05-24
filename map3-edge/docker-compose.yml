@@ -127,7 +127,7 @@ services:
       #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
       - fbdata:/usr/share/filebeat/data/
       #Mount nginx log directory
-      - ./log/nginx/:/var/log/nginx/
+      - ./log/reverse-proxy/:/var/log/reverse-proxy/
       #Allows us to report on docker from the hosts information
       - /var/run/docker.sock:/var/run/docker.sock
     command: sh -c "filebeat -e --strict.perms=false -E name=`curl -s http://whatismyip.akamai.com/`"
@@ -150,6 +150,17 @@ services:
       #We mount the host filesystem so we can report on disk usage with the system module
       - /:/hostfs:ro
     command: sh -c "metricbeat -e --strict.perms=false -system.hostfs=/hostfs -E name=`curl -s http://whatismyip.akamai.com/`"
+    restart: on-failure
+    depends_on:
+      #wait for the these services to come up. This ensures the logs are available and ES exists for indexing
+      - map3
+
+  #heartbeat container
+  heartbeat:
+    user: root
+    image: map3/heartbeat
+    build:
+      context: ./docker/heartbeat
     restart: on-failure
     depends_on:
       #wait for the these services to come up. This ensures the logs are available and ES exists for indexing
