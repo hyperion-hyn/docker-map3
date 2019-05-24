@@ -2,7 +2,7 @@
 # Docs: https://www.elastic.co/guide/en/beats/metricbeat/6.5/metricbeat-module-system.html
 
 - module: system
-  period: 10s
+  period: 60s
   metricsets:
     - cpu
     - load
@@ -14,8 +14,8 @@
     #- diskio
     #- socket
   process.include_top_n:
-    by_cpu: 5      # include top 5 processes by CPU
-    by_memory: 5   # include top 5 processes by memory
+    by_cpu: 5 # include top 5 processes by CPU
+    by_memory: 5 # include top 5 processes by memory
 
 - module: system
   period: 1m
@@ -23,14 +23,13 @@
     - filesystem
     - fsstat
   processors:
-  - drop_event.when.regexp:
-      system.filesystem.mount_point: '^/(sys|cgroup|proc|dev|etc|host|lib)($|/)'
+    - drop_event.when.regexp:
+        system.filesystem.mount_point: "^/(sys|cgroup|proc|dev|etc|host|lib)($|/)"
 
 - module: system
   period: 15m
   metricsets:
     - uptime
-
 #- module: system
 #  period: 5m
 #  metricsets:

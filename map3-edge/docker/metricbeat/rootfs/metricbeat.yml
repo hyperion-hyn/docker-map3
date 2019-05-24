@@ -10,27 +10,29 @@ metricbeat.autodiscover:
       hints.enabled: true
 
 metricbeat.modules:
-- module: docker
-  metricsets:
-    - "container"
-    - "cpu"
-    - "diskio"
-    - "healthcheck"
-    - "info"
-    #- "image"
-    - "memory"
-    - "network"
-  hosts: ["unix:///var/run/docker.sock"]
-  period: 60s
-  enabled: true
+  - module: docker
+    metricsets:
+      - "container"
+      - "cpu"
+      - "diskio"
+      - "healthcheck"
+      - "info"
+      #- "image"
+      - "memory"
+      - "network"
+    hosts: ["unix:///var/run/docker.sock"]
+    period: 60s
+    enabled: true
 
 processors:
   - add_cloud_metadata: ~
 
 output.elasticsearch:
-  hosts: ["logstash.map3.network:9200"]
+  username: metricbeat
+  password: xQuqtk7lNyN9qebb
+  protocol: https
+  hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
   loadbalance: true
-
 #output.logstash:
 #  hosts: ["logstash.map3.network:5044"]
 #  loadbalance: true
