@@ -10,8 +10,6 @@ services:
 
   map3:
     image: map3/map3
-    build:
-      context: ./docker/map3
     restart: always
     command: ["nginx", "-g", "daemon off;"]
     volumes:
@@ -27,8 +25,6 @@ services:
 
   titan:
     image: map3/titan
-    build:
-      context: ./docker/titan
     restart: always
     command: ["nginx", "-g", "daemon off;"]
     volumes:
@@ -67,8 +63,6 @@ services:
 
   registry:
     image: map3/registry
-    build:
-      context: ./docker/registry
     restart: always
     entrypoint: ["/entry.sh"]
     command: ["/docker-cmd.sh"]
@@ -81,8 +75,6 @@ services:
 
   influxdb:
     image: map3/influxdb
-    build:
-      context: ./docker/influxdb
     restart: always
     volumes:
       - influxdb_data:/var/lib/influxdb
@@ -95,8 +87,6 @@ services:
 
   telegraf:
     image: map3/telegraf
-    build:
-      context: ./docker/telegraf
     restart: always
     depends_on:
       influxdb:
@@ -104,8 +94,6 @@ services:
 
   grafana:
     image: map3/grafana
-    build:
-      context: ./docker/grafana
     restart: always
     ports:
       - 3000:3000 # grafana
@@ -119,8 +107,6 @@ services:
   filebeat:
     user: root
     image: map3/filebeat
-    build:
-      context: ./docker/filebeat
     volumes:
       #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
       - fbdata:/usr/share/filebeat/data/
@@ -137,8 +123,6 @@ services:
   metricbeat:
     user: root
     image: map3/metricbeat
-    build:
-      context: ./docker/metricbeat
     volumes:
       #The commented sections below enable Metricbeat to monitor the Docker host rather than the Metricbeat container. These are used by the system module.
       - /proc:/hostfs/proc:ro
@@ -157,8 +141,6 @@ services:
   heartbeat:
     user: root
     image: map3/heartbeat
-    build:
-      context: ./docker/heartbeat
     restart: on-failure
     depends_on:
       #wait for the these services to come up. This ensures the logs are available and ES exists for indexing
@@ -166,8 +148,6 @@ services:
 
   logrotate:
     image: map3/logrotate
-    build:
-      context: ./docker/logrotate
     restart: always
     volumes:
       - ./log/map3/:/var/log/map3/
@@ -176,8 +156,6 @@ services:
 
   geostat:
     image: map3/geostat
-    build:
-      context: ./docker/geostat
     restart: always
     volumes:
       - ./log/map3/:/var/log/map3/
