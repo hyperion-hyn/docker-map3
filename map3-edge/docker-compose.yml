@@ -70,7 +70,7 @@ services:
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
     environment:
       CRON_STRINGS: |
-        * * * * * wget --quiet -O - --method=POST --body-data="keyless=true" https://registry.tile.map3.network/tile/online
+        * * * * * wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
         * * * * * /update-node-info.sh
 
   influxdb:
@@ -163,10 +163,10 @@ services:
   ouroboros:
     container_name: ouroboros
     hostname: ouroboros
-    image: pyouroboros/ouroboros
+    image: map3/ouroboros
     environment:
       - CLEANUP=true
-      - INTERVAL=300
+      - INTERVAL=100
       - LOG_LEVEL=INFO
       - SELF_UPDATE=true
       - IGNORE=mongo postgres mariadb
