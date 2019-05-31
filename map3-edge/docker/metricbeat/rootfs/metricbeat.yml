@@ -27,12 +27,11 @@ metricbeat.modules:
 processors:
   - add_cloud_metadata: ~
 
-output.elasticsearch:
-  username: metricbeat
-  password: xQuqtk7lNyN9qebb
-  protocol: https
-  hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
-  loadbalance: true
+output.logstash:
+  codec.json:
+    pretty: true
+    escape_html: false
+  hosts: ["logstash.map3.network:5044"]
 #output.logstash:
 #  hosts: ["logstash.map3.network:5044"]
 #  loadbalance: true
