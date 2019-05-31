@@ -5,7 +5,7 @@
   metricsets:
     - expvar
     - heap
-  period: 10s
+  period: 60s
   hosts: ["localhost:6001"]
   heap.path: "/v1/debug/var"
   expvar:

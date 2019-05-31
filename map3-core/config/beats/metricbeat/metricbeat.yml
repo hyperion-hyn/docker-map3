@@ -1,3 +1,5 @@
+name: "core-tile"
+
 metricbeat.config:
   modules:
     path: ${path.config}/modules.d/*.yml
@@ -10,27 +12,29 @@ metricbeat.autodiscover:
       hints.enabled: true
 
 metricbeat.modules:
-- module: docker
-  metricsets:
-    - "container"
-    - "cpu"
-    - "diskio"
-    - "healthcheck"
-    - "info"
-    #- "image"
-    - "memory"
-    - "network"
-  hosts: ["unix:///var/run/docker.sock"]
-  period: 60s
-  enabled: true
+  - module: docker
+    metricsets:
+      - "container"
+      - "cpu"
+      - "diskio"
+      - "healthcheck"
+      - "info"
+      #- "image"
+      - "memory"
+      - "network"
+    hosts: ["unix:///var/run/docker.sock"]
+    period: 60s
+    enabled: true
 
 processors:
   - add_cloud_metadata: ~
 
-output.elasticsearch:
-  hosts: ["logstash.map3.network:9200"]
+output.logstash:
+  codec.json:
+    pretty: true
+    escape_html: false
+  hosts: ["logstash.map3.network:5044"]
   loadbalance: true
-
 #output.logstash:
 #  hosts: ["logstash.map3.network:5044"]
 #  loadbalance: true

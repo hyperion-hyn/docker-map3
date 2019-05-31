@@ -12,7 +12,7 @@ services:
     command: ["sh", "-c", "tail -f /dev/null"]
 
   map3:
-    image: docker.io/hyndocker/map3:0.141421
+    image: map3/core
     restart: always
     network_mode: "service:pause"
     command: ["--config", "/opt/map3/etc/config.json", "serve"]
@@ -39,7 +39,7 @@ services:
   #Filebeat container
   filebeat:
     user: root
-    image: docker.elastic.co/beats/filebeat:6.5.4
+    image: elastic/filebeat:7.1.0
     network_mode: "service:pause"
     volumes:
       #Mount the filebeat configuration so users can make edit
@@ -62,7 +62,7 @@ services:
   #Metricbeat container
   metricbeat:
     user: root
-    image: docker.elastic.co/beats/metricbeat:6.5.4
+    image: elastic/metricbeat:7.1.0
     network_mode: "service:pause"
     volumes:
       #Mount the metricbeat configuration so users can make edit
@@ -87,8 +87,8 @@ services:
     image: blacklabelops/logrotate:latest
     restart: always
     network_mode: "service:pause"
-    environment: 
-      - LOGS_DIRECTORIES=/var/log/nginx/ /var/log/map3/ 
+    environment:
+      - LOGS_DIRECTORIES=/var/log/nginx/ /var/log/map3/
       - LOGROTATE_INTERVAL=daily
       - LOGROTATE_COPIES=7
       - LOGROTATE_SIZE=500M
