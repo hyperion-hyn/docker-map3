@@ -15,6 +15,7 @@ filebeat.inputs:
     enable: true
     paths:
       - "/var/log/reverse-proxy/*.log"
+    exclude_lines: [".*v1/debug/var.*"]
 
 processors:
   - add_cloud_metadata: ~
