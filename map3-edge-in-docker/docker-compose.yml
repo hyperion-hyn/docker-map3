@@ -2,9 +2,6 @@ version: "2.3"
 
 services:
   map3:
-    build:
-      context: ..
-      dockerfile: map3-edge-in-docker/Dockerfile
     image: map3/deploy-edge:latest
     ports:
       - 80:80
