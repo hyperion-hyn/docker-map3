@@ -1,0 +1,26 @@
+version: "2.3"
+
+services:
+  map3:
+    image: map3/deploy-edge-aliyun:latest
+    ports:
+      - 80:80
+      - 443:443
+      - 3000:3000
+    restart: always
+    privileged: true
+
+  ouroboros:
+    container_name: ouroboros
+    hostname: ouroboros
+    image: pyouroboros/ouroboros
+    environment:
+      - CLEANUP=true
+      - INTERVAL=300
+      - LOG_LEVEL=INFO
+      - SELF_UPDATE=true
+      - IGNORE=mongo postgres mariadb
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

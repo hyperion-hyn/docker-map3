@@ -107,22 +107,26 @@
                   "systemctl daemon-reload >> /tmp/log.txt \n",
                   "systemctl restart docker >> /tmp/log.txt \n",
                   "cd /opt \n",
-                  "echo \"get map3-edge code\" >> /tmp/log.txt \n",
-                  "wget http://map3.oss-cn-hongkong.aliyuncs.com/map3-edge.zip \n",
-                  "unzip map3-edge.zip \n",
-                  "cd /opt/map3-edge \n",
+                  "echo \"get map3-all-in-one-edge code\" >> /tmp/log.txt \n",
+                  "mkdir -p /opt/docker-map3/map3-edge-in-docker \n",
+                  "cd /opt/docker-map3/map3-edge-in-docker \n",
+                  "curl -L https://static.hyn.space/deploy-map3/all-in-one/aliyun/docker-compose-aliyun.yml -o docker-compose.yml \n",
                   "echo \"do docker-compose up\" >> /tmp/log.txt \n",
                   "docker-compose up -d >> /tmp/log.txt \n",
                   "echo \"do auto start process\" >> /tmp/log.txt \n",
                   "echo \"#!/usr/bin/env bash\" > /opt/start_map3.sh \n",
-                  "echo \"cd /opt/map3-edge/\" >> /opt/start_map3.sh \n",
+                  "echo \"cd /opt/docker-map3/map3-edge-in-docker\" >> /opt/start_map3.sh \n",
                   "echo \"docker-composer down && docker-composer up -d\" >> /opt/start_map3.sh \n",
                   "chmod +x /opt/start_map3.sh \n",
                   "echo \"#!/bin/sh -e\" > /etc/rc.local \n",
                   "echo \"/opt/start_map3.sh\" >> /etc/rc.local \n",
                   "echo \"exit 0\" >> /etc/rc.local \n",
+                  "cd opt/ \n",
+                  "wget https://static.hyn.space/deploy-map3/etc/logrotate.d/docker-logs \n",
+                  "mv docker-logs /etc/logrotate.d/docker-logs",
+                  "service start cron \n",
                   "echo \"finish, do ros-notify\" >> /tmp/log.txt \n",
-                  "ros-notify -d '{\"data\" : \"Install docker ce, checkout docker-map3 code and run map3 edge node.\"}'\n"
+                  "ros-notify -d '{\"data\" : \"Install docker ce, checkout docker-map3 code and run map3 all in one edge node.\"}'\n"
                 ]
               ]
             }
