@@ -35,3 +35,26 @@ output.elasticsearch:
   # using elastic search ingest geoip, one time setup to cluster
   # https://www.elastic.co/guide/en/elasticsearch/reference/7.1/geoip-processor.html
   pipeline: geoip
+
+#PUT _ingest/pipeline/geoip
+#  {
+#    "geoip": {
+#      "description": "Add geoip info",
+#      "processors": [
+#      {
+#        "geoip": {
+#          "field": "host.name",
+#          "target_field": "map3.geo",
+#          "ignore_failure": true
+#        }
+#      },
+#      {
+#        "geoip": {
+#          "field": "nginx.access.remote_ip",
+#          "target_field": "remote.geo",
+#          "ignore_failure": true
+#        }
+#      }
+#      ]
+#    }
+#  }

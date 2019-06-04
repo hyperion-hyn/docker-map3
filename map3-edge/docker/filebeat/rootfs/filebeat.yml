@@ -18,6 +18,3 @@ output.elasticsearch:
   protocol: "https"
   username: "filebeat"
   password: "l3OaUM&L3z#sbl*r"
-  # using elastic search ingest geoip, one time setup to cluster
-  # https://www.elastic.co/guide/en/elasticsearch/reference/7.1/geoip-processor.html
-  pipeline: geoip
