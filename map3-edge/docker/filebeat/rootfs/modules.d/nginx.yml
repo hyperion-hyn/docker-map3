@@ -5,6 +5,7 @@
   # Access logs
   access:
     enabled: true
+    var.paths: ["/var/log/reverse-proxy/access.log*"]
 
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.
@@ -13,6 +14,7 @@
   # Error logs
   error:
     enabled: true
+    var.paths: ["/var/log/reverse-proxy/error.log*"]
 
     # Set custom paths for the log files. If left empty,
     # Filebeat will choose the paths depending on your OS.
