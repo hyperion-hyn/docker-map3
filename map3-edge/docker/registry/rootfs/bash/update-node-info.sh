@@ -13,7 +13,7 @@ if ! wget -O /dev/null --tries 1 --timeout 1 http://$ORI_IP ; then
 EOF
   ) > /tmp/node-info.json
 else
-  echo "not in 127.0.0.1" >> /tmp/test.txt
+  IP=`echo ${ORI_IP} | sed "s/\./-/g"`
   (cat <<EOF
 {
   "nodePublicIp": "113.66.217.71",
