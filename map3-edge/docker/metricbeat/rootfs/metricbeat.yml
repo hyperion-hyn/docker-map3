@@ -21,7 +21,33 @@ metricbeat.modules:
       - "memory"
       - "network"
     hosts: ["unix:///var/run/docker.sock"]
-    period: 60s
+    period: 30s
+    processors:
+      - drop_event.when.or:
+          - equals:
+              container.image.name: "map3/heartbeat"
+          - equals:
+              container.image.name: "map3/filebeat"
+          - equals:
+              container.image.name: "map3/metricbeat"
+          - equals:
+              container.image.name: "map3/logrotate"
+          - equals:
+              container.image.name: "map3/ouroboros"
+          - equals:
+              container.image.name: "map3/geostat"
+          - equals:
+              container.image.name: "map3/grafana"
+          - equals:
+              container.image.name: "map3/telegraf"
+          - equals:
+              container.image.name: "map3/influxdb"
+          - equals:
+              container.image.name: "map3/titan"
+          - equals:
+              container.image.name: "map3/registry"
+          - equals:
+              container.image.name: "alpine:latest"
     enabled: true
 
 processors:
