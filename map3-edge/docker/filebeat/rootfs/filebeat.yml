@@ -18,3 +18,11 @@ output.elasticsearch:
   protocol: "https"
   username: "filebeat"
   password: "l3OaUM&L3z#sbl*r"
+  index: "filebeat-%{[agent.version]}-%{+yyyy.MM}"
+
+setup.template:
+  name: "filebeat"
+  pattern: "filebeat-*"
+  enabled: false
+
+setup.ilm.enabled: false

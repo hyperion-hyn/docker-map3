@@ -1,9 +1,9 @@
 heartbeat.monitors:
   - type: http
-    schedule: "@every 5s"
+    schedule: "@every 1m"
     urls:
-      - http://map3:80/v1/debug/var
-      - http://reverse-proxy:80
+#      - http://map3:80/v1/debug/var
+#      - http://reverse-proxy:80
       - http://grafana:3000
 
 processors:
@@ -15,3 +15,11 @@ output.elasticsearch:
   protocol: https
   hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
   loadbalance: true
+  index: "heartbeat-%{[agent.version]}-%{+yyyy.MM}"
+
+setup.template:
+  name: "heartbeat"
+  pattern: "heartbeat-*"
+  enabled: false
+
+setup.ilm.enabled: false
