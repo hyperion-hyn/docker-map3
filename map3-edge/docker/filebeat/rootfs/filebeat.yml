@@ -1,7 +1,7 @@
-#filebeat.config:
-#  modules:
-#    path: ${path.config}/modules.d/*.yml
-#    reload.enabled: false
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
 
 filebeat.overwrite_pipelines: true
 
@@ -10,23 +10,11 @@ filebeat.autodiscover:
     - type: docker
       hints.enabled: true
 
-filebeat.inputs:
-  - type: log
-    enable: true
-    paths:
-      - "/var/log/reverse-proxy/*.log"
-    exclude_lines: [".*v1/debug/var.*"]
-
 processors:
   - add_cloud_metadata: ~
 
-output.logstash:
-  hosts: ["logstash.map3.network:5044"]
-#output.logstash:
-#  hosts: ["logstash.map3.network:5044"]
-#  loadbalance: true
-
-#output.elasticsearch:
-#  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
-#  username: '${ELASTICSEARCH_USERNAME:}'
-#  password: '${ELASTICSEARCH_PASSWORD:}'
+output.elasticsearch:
+  hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
+  protocol: "https"
+  username: "filebeat"
+  password: "l3OaUM&L3z#sbl*r"
