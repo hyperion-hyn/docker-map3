@@ -42,17 +42,6 @@
     }
 }
 
-(tile-edge-cache) {
-	cache {
-		# add match_header Content-Type as pbf/svg/jpg..? according to content type
-		# add match_path? e.g. /tile
-		status_header X-Cache-Status
-		default_max_age 60m
-		# path /tmp/caddy-cache : Note: adding this cause CORS problem. Dont know why
-		# optional stale, lock,vary
-	}
-}
-
 (tile-edge-auth) {
 	tls keyless key.tile.map3.network:5001 /etc/caddy/tile-server.pem /etc/caddy/tile-ca.pem
 	jwt {
@@ -93,13 +82,11 @@
 *.tile.map3.network:443 {
     import common
     import tile-edge-proxy
-    import tile-edge-cache
     import tile-edge-auth
 }
 
 :80 {
     import common
     import tile-edge-proxy
-    import tile-edge-cache
     import tile-edge-base-auth
 }
