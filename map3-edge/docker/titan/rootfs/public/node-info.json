@@ -1,4 +1,5 @@
 {
   "nodePublicIp": "127.0.0.1",
+  "domain": "127.0.0.1",
   "tileServer": "https://127-0-0-1.tile.map3.network/v1/api/tile/{z}/{x}/{y}.pbf"
 }
