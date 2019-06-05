@@ -109,10 +109,6 @@ services:
     user: root
     image: map3/filebeat
     volumes:
-      - ./docker/filebeat/rootfs/filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - ./docker/filebeat/rootfs/modules.d/:/usr/share/filebeat/modules.d/:ro
-      - ./docker/filebeat/rootfs/default.json:/usr/share/filebeat/module/nginx/access/ingest/default.json:ro
-      - ./docker/filebeat/rootfs/nginx-access.yml:/usr/share/filebeat/module/nginx/access/config/nginx-access.yml:ro
       #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
       - fbdata:/usr/share/filebeat/data/
       #Mount nginx log directory
@@ -136,7 +132,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       #We mount the host filesystem so we can report on disk usage with the system module
       - /:/hostfs:ro
-      - ./docker/metricbeat/rootfs/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
     command: sh -c "metricbeat -e --strict.perms=false -system.hostfs=/hostfs -E name=`curl -s http://whatismyip.akamai.com/`"
     restart: on-failure
     depends_on:
@@ -148,8 +143,6 @@ services:
     user: root
     image: map3/heartbeat
     restart: on-failure
-    volumes:
-      - ./docker/heartbeat/rootfs/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
     depends_on:
       #wait for the these services to come up. This ensures the logs are available and ES exists for indexing
       - map3
