@@ -3,11 +3,6 @@
 version: "2.3"
 
 services:
-  pause:
-    image: alpine:latest
-    restart: always
-    command: ["sh", "-c", "tail -f /dev/null"]
-
   map3:
     image: map3/map3
     build:
