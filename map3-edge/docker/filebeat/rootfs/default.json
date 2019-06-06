@@ -27,7 +27,7 @@
         "grok": {
           "field": "nginx.access.url",
           "patterns": [
-            "/(v\\d+)/api/tile/%{NUMBER:tile.z}/%{NUMBER:tile.x}/%{NUMBER:tile.y}.%{WORD:tile.extension}",
+            "/api/(v\\d+)/hyn/map3/%{NUMBER:tile.z}/%{NUMBER:tile.x}/%{NUMBER:tile.y}.%{WORD:tile.extension}",
             ""
           ],
           "ignore_missing": true
