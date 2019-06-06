@@ -143,6 +143,7 @@ services:
     user: root
     image: map3/heartbeat
     restart: on-failure
+    command: sh -c "heartbeat -e --strict.perms=false -E name=`curl -s http://whatismyip.akamai.com/`"
     depends_on:
       #wait for the these services to come up. This ensures the logs are available and ES exists for indexing
       - map3
