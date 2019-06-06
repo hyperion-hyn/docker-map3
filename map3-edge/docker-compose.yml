@@ -3,13 +3,10 @@
 version: "2.3"
 
 services:
-  pause:
-    image: alpine:latest
-    restart: always
-    command: ["sh", "-c", "tail -f /dev/null"]
-
   map3:
     image: map3/map3
+    build:
+      context: ./docker/map3
     restart: always
     command: ["nginx", "-g", "daemon off;"]
     volumes:
@@ -25,6 +22,8 @@ services:
 
   titan:
     image: map3/titan
+    build:
+      context: ./docker/titan
     restart: always
     command: ["nginx", "-g", "daemon off;"]
     volumes:
@@ -39,7 +38,8 @@ services:
       retries: 5
       start_period: 5s
     depends_on:
-      - registry
+      registry:
+        condition: service_healthy
 
   reverse-proxy:
     image: map3/caddy
@@ -63,19 +63,30 @@ services:
         condition: service_healthy
 
   registry:
-    image: map3/registry
+    image: map3/registry:1.0.0
+    build:
+      context: ./docker/registry
     restart: always
     entrypoint: ["/entry.sh"]
     command: ["/docker-cmd.sh"]
     volumes:
       - ./public/node-info.json:/usr/share/nginx/html/node-info.json
+    healthcheck:
+      test:
+        ["CMD", "/health-check.sh"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 3s
     environment:
       CRON_STRINGS: |
         * * * * * wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
         * * * * * /update-node-info.sh
 
   influxdb:
-    image: map3/influxdb
+    image: map3/influxdb:1.7
+    build:
+      context: ./docker/influxdb
     restart: always
     volumes:
       - influxdb_data:/var/lib/influxdb
@@ -87,14 +98,18 @@ services:
       start_period: 5s
 
   telegraf:
-    image: map3/telegraf
+    image: map3/telegraf:1.9
+    build:
+      context: ./docker/telegraf
     restart: always
     depends_on:
       influxdb:
         condition: service_healthy
 
   grafana:
-    image: map3/grafana
+    image: map3/grafana:5.4
+    build:
+      context: ./docker/grafana
     restart: always
     ports:
       - 3000:3000 # grafana
@@ -107,7 +122,9 @@ services:
   #Filebeat container
   filebeat:
     user: root
-    image: map3/filebeat
+    image: map3/filebeat:7.1
+    build:
+      context: ./docker/filebeat
     volumes:
       #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
       - fbdata:/usr/share/filebeat/data/
@@ -123,7 +140,9 @@ services:
   #Metricbeat container
   metricbeat:
     user: root
-    image: map3/metricbeat
+    image: map3/metricbeat:7.1
+    build:
+      context: ./docker/metricbeat
     volumes:
       #The commented sections below enable Metricbeat to monitor the Docker host rather than the Metricbeat container. These are used by the system module.
       - /proc:/hostfs/proc:ro
@@ -141,7 +160,9 @@ services:
   #heartbeat container
   heartbeat:
     user: root
-    image: map3/heartbeat
+    image: map3/heartbeat:7.1
+    build:
+      context: ./docker/heartbeat
     restart: on-failure
     command: sh -c "heartbeat -e --strict.perms=false -E name=`curl -s http://whatismyip.akamai.com/`"
     depends_on:
@@ -149,7 +170,9 @@ services:
       - map3
 
   logrotate:
-    image: map3/logrotate
+    image: map3/logrotate:1.3
+    build:
+      context: ./docker/logrotate
     restart: always
     volumes:
       - ./log/map3/:/var/log/map3/
@@ -157,7 +180,9 @@ services:
       - ./log/reverse-proxy/:/var/log/reverse-proxy/
 
   geostat:
-    image: map3/geostat
+    image: map3/geostat:1.0.0
+    build:
+      context: ./docker/geostat
     restart: always
     volumes:
       - ./log/map3/:/var/log/map3/

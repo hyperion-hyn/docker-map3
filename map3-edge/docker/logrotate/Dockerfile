@@ -1,4 +1,4 @@
-FROM blacklabelops/logrotate:latest
+FROM blacklabelops/logrotate:1.3
 
 ENV LOGS_DIRECTORIES="/var/log/nginx/  /var/log/titan/ /var/log/reverse-proxy/" \
     LOGROTATE_INTERVAL="daily" \
