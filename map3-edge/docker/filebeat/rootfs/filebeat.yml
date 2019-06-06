@@ -10,9 +10,6 @@ filebeat.autodiscover:
     - type: docker
       hints.enabled: true
 
-processors:
-  - add_cloud_metadata: ~
-
 output.elasticsearch:
   hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
   protocol: "https"
