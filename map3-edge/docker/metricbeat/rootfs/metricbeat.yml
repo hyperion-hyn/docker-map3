@@ -1,8 +1,8 @@
-metricbeat.config:
-  modules:
-    path: ${path.config}/modules.d/*.yml
+#metricbeat.config:
+#  modules:
+#    path: ${path.config}/modules.d/*.yml
     # Reload module configs as they change:
-    reload.enabled: false
+#    reload.enabled: false
 
 metricbeat.autodiscover:
   providers:
@@ -24,30 +24,32 @@ metricbeat.modules:
     period: 1m
     processors:
       - drop_event.when.or:
-          - equals:
-              container.image.name: "map3/heartbeat"
-          - equals:
+          - regexp:
+              container.image.name: "map3/heartbeat.*"
+          - regexp:
               container.image.name: "map3/filebeat"
-          - equals:
-              container.image.name: "map3/metricbeat"
-          - equals:
-              container.image.name: "map3/logrotate"
-          - equals:
-              container.image.name: "map3/ouroboros"
-          - equals:
-              container.image.name: "map3/geostat"
-          - equals:
-              container.image.name: "map3/grafana"
-          - equals:
-              container.image.name: "map3/telegraf"
-          - equals:
-              container.image.name: "map3/influxdb"
-          - equals:
-              container.image.name: "map3/titan"
-          - equals:
-              container.image.name: "map3/registry"
+          - regexp:
+              container.image.name: "map3/metricbeat.*"
+          - regexp:
+              container.image.name: "map3/logrotate.*"
+          - regexp:
+              container.image.name: "map3/ouroboros.*"
+          - regexp:
+              container.image.name: "map3/geostat.*"
+          - regexp:
+              container.image.name: "map3/grafana.*"
+          - regexp:
+              container.image.name: "map3/telegraf.*"
+          - regexp:
+              container.image.name: "map3/influxdb.*"
+          - regexp:
+              container.image.name: "map3/titan.*"
+          - regexp:
+              container.image.name: "map3/registry.*"
           - equals:
               container.image.name: "alpine:latest"
+          - regexp:
+              container.image.name: "map3/map3.*"
     enabled: true
 
 processors:
@@ -83,12 +85,13 @@ output.elasticsearch:
   #      ]
   #    }
   #  }
-  index: "metricbeat-%{[agent.version]}-%{+yyyy.MM}"
+#  index: "metricbeat-%{[agent.version]}-%{+yyyy.MM}"
 
 setup.template:
   name: "metricbeat"
   pattern: "metricbeat-*"
   enabled: false
+#  overwrite: true
 
-setup.ilm.enabled: false
+#setup.ilm.enabled: false
 #https://github.com/elastic/beats/issues/11866

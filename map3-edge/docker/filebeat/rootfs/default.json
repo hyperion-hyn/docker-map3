@@ -89,13 +89,15 @@
       {
         "geoip": {
           "field": "host.name",
-          "target_field": "map3.geo"
+          "target_field": "map3.geo",
+          "ignore_missing": true
         }
       },
       {
         "geoip": {
           "field": "nginx.access.remote_ip",
-          "target_field": "remote.geo"
+          "target_field": "remote.geo",
+          "ignore_missing": true
         }
       }
     ],
