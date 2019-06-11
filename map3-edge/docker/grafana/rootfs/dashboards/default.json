@@ -70,20 +70,21 @@
     "tableColumn": "last",
     "targets": [{
       "groupBy": [],
-      "measurement": "nginx",
+      "measurement": "geodata",
       "orderByTime": "ASC",
       "policy": "autogen",
+      "query": "SELECT sum(\"count\") FROM \"autogen\".\"geodata\" WHERE $timeFilter",
       "refId": "A",
       "resultFormat": "time_series",
       "select": [
         [{
           "params": [
-            "requests"
+            "count"
           ],
           "type": "field"
         }, {
           "params": [],
-          "type": "last"
+          "type": "sum"
         }]
       ],
       "tags": []
@@ -330,19 +331,19 @@
       "measurement": "nginx",
       "orderByTime": "ASC",
       "policy": "autogen",
-      "query": "SELECT non_negative_difference(\"requests\") FROM \"autogen\".\"nginx\" WHERE $timeFilter",
+      "query": "SELECT sum(\"count\") FROM \"autogen\".\"geodata\" WHERE $timeFilter GROUP BY time($__interval)",
       "rawQuery": true,
       "refId": "A",
       "resultFormat": "time_series",
       "select": [
         [{
           "params": [
-            "requests"
+            "count"
           ],
           "type": "field"
         }, {
           "params": [],
-          "type": "non_negative_difference"
+          "type": "sum"
         }]
       ],
       "tags": []
