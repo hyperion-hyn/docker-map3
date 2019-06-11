@@ -1,12 +1,12 @@
 # docker-map3
 
 ## edge
-编译并运行
+编译镜像并运行
 ````
-docker-compose build && docker-compose down && docker-compose up --remove-orphans
+docker-compose down --remove-orphans && docker-compose up --build
 ````
 
-取镜像并运行
+拉取镜像并运行
 ````
-docker-compose down && docker-compose up --remove-orphans  --no-build
+docker-compose down --remove-orphans && docker-compose up --no-build
 ````
