@@ -4,7 +4,7 @@ paths:
 - {{$path}}
   {{ end }}
 exclude_files: [".gz$"]
-exclude_lines: [".*v1/debug/var.*", ".*favicon.ico.*"]
+exclude_lines: [".*v1/debug/var.*", ".*favicon.ico.*", ".*GET /.*Wget.*"]
 
   {{ if .convert_timezone }}
 processors:

@@ -10,20 +10,18 @@ filebeat.autodiscover:
     - type: docker
       hints.enabled: true
 
-processors:
-  - add_cloud_metadata: ~
-
 output.elasticsearch:
   hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
   protocol: "https"
   username: "filebeat"
   password: "l3OaUM&L3z#sbl*r"
-  index: "filebeat-%{[agent.version]}-%{+yyyy.MM}"
+#  index: "filebeat-%{[agent.version]}-%{+yyyy.MM}"
 
 setup.template:
   name: "filebeat"
   pattern: "filebeat-*"
   enabled: false
+#  overwrite: true
 
-setup.ilm.enabled: false
+#setup.ilm.enabled: false
 #https://github.com/elastic/beats/issues/11866

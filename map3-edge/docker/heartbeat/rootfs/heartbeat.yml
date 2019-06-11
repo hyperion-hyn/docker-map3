@@ -4,21 +4,18 @@ heartbeat.monitors:
     urls:
       - "http://map3:80/server_status"
 
-processors:
-  - add_cloud_metadata: ~
-
 output.elasticsearch:
   hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
   protocol: "https"
   username: "heartbeat"
   password: "2kG4rx7HVDhaKWNh"
-  loadbalance: true
-  index: "heartbeat-%{[agent.version]}-%{+yyyy.MM}"
+#  index: "heartbeat-%{[agent.version]}-%{+yyyy.MM}"
 
 setup.template:
   name: "heartbeat"
   pattern: "heartbeat-*"
   enabled: false
+#  overwrite: true
 
-setup.ilm.enabled: false
+#setup.ilm.enabled: false
 #https://github.com/elastic/beats/issues/11866
