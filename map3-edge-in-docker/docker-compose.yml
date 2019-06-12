@@ -9,6 +9,8 @@ services:
       - 3000:3000
     restart: always
     privileged: true
+    volumes:
+      - ./data/:/map3_data/
 
   ouroboros:
     container_name: ouroboros
