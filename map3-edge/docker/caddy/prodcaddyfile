@@ -99,6 +99,7 @@
     import common
     import tile-edge-proxy
     import tile-edge-auth
+    import tile-edge-mapillary
 }
 
 :80 {
