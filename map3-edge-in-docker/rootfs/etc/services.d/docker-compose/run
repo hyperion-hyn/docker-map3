@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv sh
 
-cd /src && exec /usr/bin/docker-compose up 
+# pull images and run docker-compose up --no-build
+exec /bash/docker-compose-up.sh
 

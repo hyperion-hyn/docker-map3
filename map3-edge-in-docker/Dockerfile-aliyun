@@ -13,6 +13,8 @@ RUN pip install docker-compose
 
 COPY ./map3-edge-in-docker/rootfs/ /
 
+RUN chmod a+x /bash/docker-compose-up.sh
+
 COPY ./map3-edge /src
 
 COPY ./map3-edge-in-docker/docker_daemon.json /etc/docker/daemon.json
