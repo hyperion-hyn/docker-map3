@@ -10,7 +10,7 @@ services:
     restart: always
     privileged: true
     volumes:
-      - ./data/:/map3_data/
+      - ./data/:/var/lib/docker/volumes/
 
   ouroboros:
     container_name: ouroboros
