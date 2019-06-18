@@ -6,3 +6,7 @@ map3-edge/secrets
 map3-edge-in-docker/data/fbdata
 map3-edge-in-docker/data/grafana_data
 map3-edge-in-docker/data/influxdb_data
+metadata.db
+map3-edge-in-docker/data/src_fbdata
+map3-edge-in-docker/data/src_grafana_data
+map3-edge-in-docker/data/src_influxdb_data
