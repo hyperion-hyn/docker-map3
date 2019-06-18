@@ -88,7 +88,7 @@ services:
       context: ./docker/influxdb
     restart: always
     volumes:
-      - /map3_data/influxdb_data:/var/lib/influxdb
+      - /map3_data/influxdb_data/:/var/lib/influxdb/
     healthcheck:
       test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8086/ping"]
       interval: 5s
@@ -114,7 +114,7 @@ services:
       - 3000:3000 # grafana
     entrypoint: /entry.sh
     volumes:
-      - /map3_data/grafana_data:/var/lib/grafana
+      - /map3_data/grafana_data/:/var/lib/grafana/:grafana:grafana
     depends_on:
       - telegraf
 
@@ -126,7 +126,7 @@ services:
       context: ./docker/filebeat
     volumes:
       #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
-      - /map3_data/fbdata:/usr/share/filebeat/data/
+      - /map3_data/fbdata/:/usr/share/filebeat/data/
       #Mount nginx log directory
       - ./log/reverse-proxy/:/var/log/reverse-proxy/
       #Allows us to report on docker from the hosts information
