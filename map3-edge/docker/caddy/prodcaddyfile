@@ -6,10 +6,10 @@
 	push
 	header / Access-Control-Allow-Origin *
 
-    log / /var/log/caddy/access.log "{combined}" {
+    log / /var/log/caddy/access.log "{combined} {latency_ms}" {
 		rotate_size 50  # Rotate after 50 MB
-		rotate_age  90  # Keep rotated files for 90 days
-		rotate_keep 20  # Keep at most 20 log files
+		rotate_age  7  # Keep rotated files for 7 days
+		rotate_keep 10  # Keep at most 10 log files
 		rotate_compress # Compress rotated log files in gzip format
 		# ipmask 255.255.0.0 ffff:ffff:ffff:ff00:: #anonymied traffic
 	}
@@ -40,6 +40,22 @@
     	health_check_interval 30s
     	health_check_timeout 60s
     }
+}
+
+(tile-edge-mapillary) {
+    #mapillary sequence layer
+    rewrite /api/v0.1/mapillary/sequence_layer {
+        r  (.*)
+        to /v0.1/{1}
+    }
+    proxy /v0.1 https://tiles3.mapillary.com
+    cache {
+        match_path /api/v0.1/mapillary/sequence_layer
+        match_header Content-Type application/vnd.mapbox-vector-tile
+        status_header X-Cache-Status-Map3-Edge
+        default_max_age 60m
+        path /etc/caddy/cache
+	}
 }
 
 (tile-edge-auth) {
@@ -83,10 +99,12 @@
     import common
     import tile-edge-proxy
     import tile-edge-auth
+    import tile-edge-mapillary
 }
 
 :80 {
     import common
     import tile-edge-proxy
     import tile-edge-base-auth
+    import tile-edge-mapillary
 }

@@ -8,8 +8,8 @@
     - load
     - memory
     - network
-    - process
-    - process_summary
+    # - process
+    # - process_summary
     #- core
     #- diskio
     #- socket
