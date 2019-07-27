@@ -1,0 +1,8 @@
+[submodule "map3-edge/docker/geostat/src"]
+	path = map3-edge/docker/geostat/src
+	url = https://github.com/hyperion-hyn/geostat.git
+	branch = master
+[submodule "map3-edge/docker/caddy/src"]
+	path = map3-edge/docker/caddy/src
+	url = https://github.com/hyperion-hyn/caddy.git
+	branch = map3
