@@ -3,121 +3,20 @@
 version: "2.3"
 
 services:
-  map3:
-    image: map3/map3
-    build:
-      context: ./docker/map3
-    restart: always
-    command: ["nginx", "-g", "daemon off;"]
-    volumes:
-      #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
-      - ./log/map3/:/var/log/nginx/
-    healthcheck:
-      test:
-        ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 5s
-
-  titan:
-    image: map3/titan
-    build:
-      context: ./docker/titan
-    restart: always
-    command: ["nginx", "-g", "daemon off;"]
-    volumes:
-      #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
-      - ./log/titan/:/var/log/nginx/
-      - ./public/node-info.json:/usr/share/nginx/html/node-info.json
-    healthcheck:
-      test:
-        ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:80/server_status"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 5s
-    depends_on:
-      registry:
-        condition: service_healthy
-
   reverse-proxy:
-    image: map3/caddy
+    image: map3/caddy:0.618
+    build:
+      context: ./docker/caddy/src
     restart: always
     ports:
       - 80:80
       - 443:443
-    # command: ["/usr/local/bin/caddy", "-conf", "/etc/caddy/prodcaddyfile"]
-    entrypoint:
-      - /usr/local/bin/caddy
-      - -conf
-      - /etc/caddy/prodcaddyfile
+    entrypoint: ["/usr/local/bin/caddy", "-conf", "/etc/caddy/prodcaddyfile"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/reverse-proxy/:/var/log/caddy/
-      - ./docker/caddy/prodcaddyfile:/etc/caddy/prodcaddyfile
-    depends_on:
-      map3:
-        condition: service_healthy
-      titan:
-        condition: service_healthy
-
-  registry:
-    image: map3/registry:1.0.0
-    build:
-      context: ./docker/registry
-    restart: always
-    entrypoint: ["/entry.sh"]
-    command: ["/docker-cmd.sh"]
-    volumes:
-      - ./public/node-info.json:/usr/share/nginx/html/node-info.json
-    healthcheck:
-      test: ["CMD", "/health-check.sh"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 3s
-    environment:
-      CRON_STRINGS: |
-        * * * * * wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
-        * * * * * /update-node-info.sh
-
-  influxdb:
-    image: map3/influxdb:1.7
-    build:
-      context: ./docker/influxdb
-    restart: always
-    volumes:
-      - influxdb_data:/var/lib/influxdb
-    healthcheck:
-      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8086/ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 5s
-
-  telegraf:
-    image: map3/telegraf:1.9
-    build:
-      context: ./docker/telegraf
-    restart: always
-    depends_on:
-      influxdb:
-        condition: service_healthy
-
-  grafana:
-    image: map3/grafana:5.4
-    build:
-      context: ./docker/grafana
-    restart: always
-    user: "472"
-    ports:
-      - 3000:3000 # grafana
-    entrypoint: /entry.sh
-    volumes:
-      - grafana_data:/var/lib/grafana
-    depends_on:
-      - telegraf
+      - ./config/caddy/prodcaddyfile:/etc/caddy/prodcaddyfile
+      - ./public_html/:/var/run/caddy/public_html/
 
   #Filebeat container
   filebeat:
@@ -134,58 +33,48 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: sh -c "filebeat -e --strict.perms=false -E name=`curl -s http://whatismyip.akamai.com/`"
     restart: on-failure
-    depends_on:
-      - map3
 
-  #Metricbeat container
-  metricbeat:
-    user: root
-    image: map3/metricbeat:7.1
+  influxdb:
+    image: map3/influxdb:1.7
     build:
-      context: ./docker/metricbeat
-    volumes:
-      #The commented sections below enable Metricbeat to monitor the Docker host rather than the Metricbeat container. These are used by the system module.
-      - /proc:/hostfs/proc:ro
-      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
-      #Allows us to report on docker from the hosts information
-      - /var/run/docker.sock:/var/run/docker.sock
-      #We mount the host filesystem so we can report on disk usage with the system module
-      - /:/hostfs:ro
-    command: sh -c "metricbeat -e --strict.perms=false -system.hostfs=/hostfs -E name=`curl -s http://whatismyip.akamai.com/`"
-    restart: on-failure
-    depends_on:
-      #wait for the these services to come up. This ensures the logs are available and ES exists for indexing
-      - map3
-
-  #heartbeat container
-  heartbeat:
-    user: root
-    image: map3/heartbeat:7.1
-    build:
-      context: ./docker/heartbeat
-    restart: on-failure
-    command: sh -c "heartbeat -e --strict.perms=false -E name=`curl -s http://whatismyip.akamai.com/`"
-    depends_on:
-      #wait for the these services to come up. This ensures the logs are available and ES exists for indexing
-      - map3
-
-  logrotate:
-    image: map3/logrotate:1.3
-    build:
-      context: ./docker/logrotate
+      context: ./docker/influxdb
     restart: always
     volumes:
-      - ./log/map3/:/var/log/map3/
-      - ./log/titan/:/var/log/titan/
-      - ./log/reverse-proxy/:/var/log/reverse-proxy/
+      - influxdb_data:/var/lib/influxdb
+    environment:
+      - INFLUXDB_UDP_ENABLED=true
+
+  telegraf:
+    image: map3/telegraf:1.9
+    build:
+      context: ./docker/telegraf
+    restart: always
+    depends_on:
+      - influxdb
+
+  grafana:
+    image: map3/grafana:5.4
+    build:
+      context: ./docker/grafana
+    restart: always
+    ports:
+      - 3000:3000 # grafana
+    entrypoint: /entry.sh
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - telegraf
 
   geostat:
-    image: map3/geostat:1.0.0
+    image: map3/go-geostat:1.0
     build:
-      context: ./docker/geostat
+      context: ./docker/geostat/src
     restart: always
     volumes:
-      - ./log/map3/:/var/log/map3/
+      - ./log/reverse-proxy/:/var/log/geostat/
+      - ./config/go-geostat/geostat.json:/etc/geostat/geostat.json
+    depends_on:
+      - reverse-proxy
 
   ouroboros:
     container_name: ouroboros
@@ -193,14 +82,15 @@ services:
     image: map3/ouroboros
     environment:
       - CLEANUP=true
+      - CLEANUP_UNUSED_VOLUMES=true
       - INTERVAL=100
       - LOG_LEVEL=INFO
       - SELF_UPDATE=true
-      - IGNORE=mongo postgres mariadb
       - TZ=Asia/Shanghai
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
 volumes:
   #Filebeat data i.e. registry file
   fbdata:

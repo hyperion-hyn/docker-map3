@@ -1,3 +1,11 @@
+##### Proxy #####
+# [path]              | [destination]
+# /v1/api             | core.tile.map3.network:80
+# /v1/debug/var       | core.tile.map3.network:80
+# /api/v1/hyn         | core.tile.map3.network:80
+# /v0.1               | https://tiles3.mapillary.com
+# /wmts/epsg4326/best | https://gibs.earthdata.nasa.gov
+
 (common) {
     root /var/run/caddy/public_html
     index index.html
@@ -7,6 +15,7 @@
 	header / Access-Control-Allow-Origin *
 
     log / /var/log/caddy/access.log "{combined} {latency_ms}" {
+        except /v1/debug/var
 		rotate_size 50  # Rotate after 50 MB
 		rotate_age  7  # Keep rotated files for 7 days
 		rotate_keep 10  # Keep at most 10 log files
@@ -15,47 +24,41 @@
 	}
 }
 
+(registry) {
+    on startup wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
+    on shutdown wget --quiet -O - --method=POST https://registry.tile.map3.network/tile/offline
+
+	ccron @every:1m wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
+}
+
 (tile-edge-proxy) {
-	proxy  /v1/api map3:80 {
-    	health_check /server_status
+	proxy  /v1/api core.tile.map3.network:80 {
+    	health_check /v1/debug/var
     	health_check_interval 30s
     	health_check_timeout 60s
     }
 
-    proxy  /v1/debug/var map3:80 {
-    	health_check /server_status
-    	health_check_interval 30s
-    	health_check_timeout 60s
-    }
-
-    proxy / titan:80 {
-    	health_check /server_status
+    proxy  /v1/debug/var core.tile.map3.network:80 {
+    	health_check /v1/debug/var
     	health_check_interval 30s
     	health_check_timeout 60s
     }
 
     # new proxy for namespace:/api/{version}/{provider}/{mapname}/{z}/{x}/{y}.{ext}
-    proxy /api/v1/hyn map3:80 {
-    	health_check /server_status
+    proxy /api/v1/hyn core.tile.map3.network:80 {
+    	health_check /v1/debug/var
     	health_check_interval 30s
     	health_check_timeout 60s
     }
 }
 
-(tile-edge-mapillary) {
-    #mapillary sequence layer
-    rewrite /api/v0.1/mapillary/sequence_layer {
-        r  (.*)
-        to /v0.1/{1}
-    }
-    proxy /v0.1 https://tiles3.mapillary.com
+(osm-tile-cache) {
     cache {
-        match_path /api/v0.1/mapillary/sequence_layer
-        match_header Content-Type application/vnd.mapbox-vector-tile
-        status_header X-Cache-Status-Map3-Edge
+        match_path /v1/api/tile
+        status_header X-Cache-Status
         default_max_age 60m
         path /etc/caddy/cache
-	}
+    }
 }
 
 (tile-edge-auth) {
@@ -95,16 +98,27 @@
     }
 }
 
+# health check docker
+(health-check) {
+    status 200 /server_status
+}
+
 *.tile.map3.network:443 {
     import common
+    import registry
     import tile-edge-proxy
     import tile-edge-auth
-    import tile-edge-mapillary
+    import osm-tile-cache
+    import pkg/thirdparty/*
+    import health-check
 }
 
 :80 {
+    tls off
     import common
     import tile-edge-proxy
     import tile-edge-base-auth
-    import tile-edge-mapillary
+    import osm-tile-cache
+    import pkg/thirdparty/*
+    import health-check
 }
