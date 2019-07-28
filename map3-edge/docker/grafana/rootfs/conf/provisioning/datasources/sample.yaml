@@ -52,9 +52,7 @@ apiVersion: 1
 #   # <bool> allow users to edit datasources from the UI.
 #   editable: false
 datasources:
- - id: 1
-   orgId: 1
-   name: InfluxDB
+ - name: InfluxDB
    type: influxdb
    typeLogoUrl: 'public/app/plugins/datasource/influxdb/img/influxdb_logo.svg'
    access: proxy
@@ -71,4 +69,22 @@ datasources:
      keepCookies: []
    secureJsonFields: {}
    version: 1
+   readOnly: false
+ - name: InfluxDB-geo
+   type: influxdb
+   typeLogoUrl: 'public/app/plugins/datasource/influxdb/img/influxdb_logo.svg'
+   access: proxy
+   url: http://influxdb:8086
+   password: ''
+   user: ''
+   database: geodata
+   basicAuth: false
+   basicAuthUser: ''
+   basicAuthPassword: ''
+   withCredentials: false
+   isDefault: false
+   jsonData:
+     keepCookies: []
+   secureJsonFields: {}
+   version: 2
    readOnly: false
