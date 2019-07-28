@@ -1,0 +1,12 @@
+{
+    "db": {
+        "host": "influxdb",
+        "port": "8089",
+        "database": "telegraf",
+        "username": "",
+        "password": "",
+        "measurement": "geodata",
+        "full_size": 100,
+        "insert_tim_int": 10
+    }
+}
