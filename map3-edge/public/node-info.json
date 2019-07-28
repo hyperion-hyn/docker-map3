@@ -1,5 +1,0 @@
-{
-  "nodePublicIp": "127.0.0.1",
-  "domain": "127.0.0.1",
-  "tileServer": "http://127.0.0.1/v1/api/tile/{z}/{x}/{y}.pbf"
-}
