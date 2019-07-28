@@ -2,11 +2,16 @@
     "db": {
         "host": "influxdb",
         "port": "8089",
-        "database": "telegraf",
+        "tcp_port": "8086",
+        "database": "geodata",
         "username": "",
         "password": "",
         "measurement": "geodata",
         "full_size": 100,
-        "insert_tim_int": 10
+        "insert_tim_int": 10,
+        "retention_policy": {
+            "name": "30_days_only",
+            "value": "30d"
+        }
     }
 }
