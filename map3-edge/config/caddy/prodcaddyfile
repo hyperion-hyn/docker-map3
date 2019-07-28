@@ -25,10 +25,10 @@
 }
 
 (registry) {
-    on startup wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
+    on startup wget --quiet -O - --method=POST --body-data="keyless=false&version=1.0.0" https://registry.tile.map3.network/tile/online
     on shutdown wget --quiet -O - --method=POST https://registry.tile.map3.network/tile/offline
 
-	ccron @every:1m wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
+	ccron @every:1m wget --quiet -O - --method=POST --body-data="keyless=false&version=1.0.0" https://registry.tile.map3.network/tile/online
 }
 
 (tile-edge-proxy) {
@@ -62,7 +62,7 @@
 }
 
 (tile-edge-auth) {
-	tls keyless key.tile.map3.network:5001 /etc/caddy/tile-server.pem /etc/caddy/tile-ca.pem
+	tls off
 	jwt {
         path /v1/api/tile/
     #    publickey /etc/caddy/jwt-key.pub
@@ -103,19 +103,9 @@
     status 200 /server_status
 }
 
-*.tile.map3.network:443 {
+:80 {
     import common
     import registry
-    import tile-edge-proxy
-    import tile-edge-auth
-    import osm-tile-cache
-    import pkg/thirdparty/*
-    import health-check
-}
-
-:80 {
-    tls off
-    import common
     import tile-edge-proxy
     import tile-edge-base-auth
     import osm-tile-cache
