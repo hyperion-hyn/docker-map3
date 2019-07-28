@@ -1,8 +1,7 @@
 {
     "db": {
         "host": "influxdb",
-        "port": "8089",
-        "tcp_port": "8086",
+        "port": "8086",
         "database": "geodata",
         "username": "",
         "password": "",
