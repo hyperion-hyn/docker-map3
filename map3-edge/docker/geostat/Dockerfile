@@ -1,17 +1,28 @@
-FROM python:2.7.15-alpine3.8
+FROM golang:1.12-alpine3.9 as builder
 
-ARG S6_OVERLAY_VERSION=v1.21.4.0
+# install software packages 
+RUN apk add --update --no-cache git build-base
 
-RUN set -eux; \
-    wget -O /tmp/s6-overlay-amd64.tar.gz https://github.com/just-containers/s6-overlay/releases/download/${S6_OVERLAY_VERSION}/s6-overlay-amd64.tar.gz \
-    && tar xzf /tmp/s6-overlay-amd64.tar.gz -C / \
-    && rm -rf /tmp/*
+# copy code
+COPY ./src $GOPATH/src/github.com/hyperion-hyn/geostat
 
-COPY ./rootfs/ /
+# build the dmapper server and crontab
+WORKDIR $GOPATH/src/github.com/hyperion-hyn/geostat
+RUN GO111MODULE=on go mod vendor && go build -a -ldflags="-w -s" && go install
 
-RUN cd /opt/geostat/ && pip install -r requirements.txt 
+###
+FROM alpine:3.9
 
-COPY rootfs /
-COPY ./rootfs/config/settings.ini /opt/geostat/settings.ini
+# install software packages
+RUN apk add --update --no-cache ca-certificates curl
 
-ENTRYPOINT ["/init"]
+# copy files from builder
+COPY --from=builder /go/bin/geostat /usr/bin/geostat
+
+# copy config file
+COPY ./src/geostat.json ./src/GeoIP2-City.mmdb /etc/geostat/
+COPY ./rootfs/entrypoint.sh ./rootfs/optimize-influxdb.sh ./rootfs/geostat.sh /
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["/geostat.sh", "--config", "/etc/geostat/geostat.json", "--logfile", "/var/log/geostat/access.log", "--geodb", "/etc/geostat/GeoIP2-City.mmdb"]
