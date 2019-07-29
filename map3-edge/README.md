@@ -1,15 +1,15 @@
 
-清理volumes并编译镜像运行
+clean volumes, build and run
 ````
-docker system prune --volumes && docker-compose down --remove-orphans && docker-compose up --build
+docker-compose down --volumes --remove-orphans && docker-compose up --build --remove-orphans 
 ````
 
-编译镜像并执行
+build and run
 ````
 docker-compose down --remove-orphans && docker-compose up --build
 ````
 
-拉取镜像并执行
+pull and run
 ````
 docker-compose down --remove-orphans && docker-compose up --no-build
 ````
