@@ -53,7 +53,7 @@ services:
       - influxdb
 
   grafana:
-    image: map3/grafana:5.4
+    image: map3/grafana:6.2
     build:
       context: ./docker/grafana
     restart: always
@@ -68,7 +68,7 @@ services:
   geostat:
     image: map3/go-geostat:1.0
     build:
-      context: ./docker/geostat/src
+      context: ./docker/geostat
     restart: always
     volumes:
       - ./log/reverse-proxy/:/var/log/geostat/
