@@ -1,478 +1,605 @@
 {
   "annotations": {
-    "list": [{
-      "builtIn": 1,
-      "datasource": "-- Grafana --",
-      "enable": true,
-      "hide": true,
-      "iconColor": "rgba(0, 211, 255, 1)",
-      "name": "Annotations & Alerts",
-      "type": "dashboard"
-    }]
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
+  "iteration": 1564402682972,
   "links": [],
-  "panels": [{
-    "cacheTimeout": null,
-    "colorBackground": false,
-    "colorValue": false,
-    "colors": [
-      "#f9934e",
-      "#ba43a9",
-      "#d44a3a"
-    ],
-    "datasource": "InfluxDB-geo",
-    "format": "none",
-    "gauge": {
-      "maxValue": 100,
-      "minValue": 0,
-      "show": false,
-      "thresholdLabels": false,
-      "thresholdMarkers": true
-    },
-    "gridPos": {
-      "h": 5,
-      "w": 7,
-      "x": 0,
-      "y": 0
-    },
-    "id": 12,
-    "interval": null,
-    "links": [],
-    "mappingType": 1,
-    "mappingTypes": [{
-      "name": "value to text",
-      "value": 1
-    }, {
-      "name": "range to text",
-      "value": 2
-    }],
-    "maxDataPoints": 100,
-    "nullPointMode": "connected",
-    "nullText": null,
-    "postfix": "",
-    "postfixFontSize": "50%",
-    "prefix": "",
-    "prefixFontSize": "50%",
-    "rangeMaps": [{
-      "from": "null",
-      "text": "N/A",
-      "to": "null"
-    }],
-    "sparkline": {
-      "fillColor": "rgba(31, 118, 189, 0.18)",
-      "full": false,
-      "lineColor": "rgb(31, 120, 193)",
-      "show": false
-    },
-    "tableColumn": "last",
-    "targets": [{
-      "groupBy": [],
-      "measurement": "geodata",
-      "orderByTime": "ASC",
-      "policy": "default",
-      "query": "SELECT sum(\"count\") FROM \"geodata\" WHERE $timeFilter",
-      "refId": "A",
-      "resultFormat": "time_series",
-      "select": [
-        [{
-          "params": [
-            "count"
-          ],
-          "type": "field"
-        }, {
-          "params": [],
-          "type": "sum"
-        }]
+  "panels": [
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#f9934e",
+        "#ba43a9",
+        "#d44a3a"
       ],
-      "tags": []
-    }],
-    "thresholds": "",
-    "title": "TOTAL NUMBER OF REQUESTS SERVED",
-    "type": "singlestat",
-    "valueFontSize": "100%",
-    "valueMaps": [{
-      "op": "=",
-      "text": "N/A",
-      "value": "null"
-    }],
-    "valueName": "max"
-  }, {
-    "cacheTimeout": null,
-    "colorBackground": false,
-    "colorPostfix": false,
-    "colorPrefix": false,
-    "colorValue": true,
-    "colors": [
-      "#299c46",
-      "#eab839",
-      "#d44a3a"
-    ],
-    "decimals": 1,
-    "format": "percent",
-    "gauge": {
-      "maxValue": 100,
-      "minValue": 0,
-      "show": true,
-      "thresholdLabels": true,
-      "thresholdMarkers": true
-    },
-    "gridPos": {
-      "h": 5,
-      "w": 8,
-      "x": 7,
-      "y": 0
-    },
-    "id": 6,
-    "interval": null,
-    "links": [],
-    "mappingType": 2,
-    "mappingTypes": [{
-      "name": "value to text",
-      "value": 1
-    }, {
-      "name": "range to text",
-      "value": 2
-    }],
-    "maxDataPoints": 100,
-    "nullPointMode": "connected",
-    "nullText": null,
-    "postfix": "",
-    "postfixFontSize": "50%",
-    "prefix": "",
-    "prefixFontSize": "50%",
-    "rangeMaps": [],
-    "sparkline": {
-      "fillColor": "rgba(94, 92, 92, 0.24)",
-      "full": false,
-      "lineColor": "#1f78c1",
-      "show": true
-    },
-    "tableColumn": "",
-    "targets": [{
-      "groupBy": [{
-        "params": [
-          "$interval"
-        ],
-        "type": "time"
-      }, {
-        "params": [
-          "null"
-        ],
-        "type": "fill"
-      }],
-      "measurement": "cpu",
-      "orderByTime": "ASC",
-      "policy": "autogen",
-      "refId": "A",
-      "resultFormat": "time_series",
-      "select": [
-        [{
-          "params": [
-            "usage_user"
-          ],
-          "type": "field"
-        }, {
-          "params": [],
-          "type": "mean"
-        }]
+      "datasource": "InfluxDB-geo",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 12,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
       ],
-      "tags": []
-    }],
-    "thresholds": "50,80",
-    "timeFrom": null,
-    "title": "CPU USAGE",
-    "type": "singlestat",
-    "valueFontSize": "70%",
-    "valueMaps": [{
-      "op": "=",
-      "text": "N/A",
-      "value": "null"
-    }],
-    "valueName": "current"
-  }, {
-    "cacheTimeout": null,
-    "colorBackground": false,
-    "colorPostfix": false,
-    "colorPrefix": false,
-    "colorValue": true,
-    "colors": [
-      "#299c46",
-      "#eab839",
-      "#e24d42"
-    ],
-    "format": "percent",
-    "gauge": {
-      "maxValue": 100,
-      "minValue": 0,
-      "show": true,
-      "thresholdLabels": true,
-      "thresholdMarkers": true
-    },
-    "gridPos": {
-      "h": 5,
-      "w": 9,
-      "x": 15,
-      "y": 0
-    },
-    "id": 10,
-    "interval": null,
-    "links": [],
-    "mappingType": 1,
-    "mappingTypes": [{
-      "name": "value to text",
-      "value": 1
-    }, {
-      "name": "range to text",
-      "value": 2
-    }],
-    "maxDataPoints": 100,
-    "nullPointMode": "connected",
-    "nullText": null,
-    "postfix": "",
-    "postfixFontSize": "50%",
-    "prefix": "",
-    "prefixFontSize": "50%",
-    "rangeMaps": [{
-      "from": "null",
-      "text": "N/A",
-      "to": "null"
-    }],
-    "sparkline": {
-      "fillColor": "rgba(31, 118, 189, 0.18)",
-      "full": false,
-      "lineColor": "rgb(31, 120, 193)",
-      "show": true
-    },
-    "tableColumn": "",
-    "targets": [{
-      "groupBy": [{
-        "params": [
-          "$__interval"
-        ],
-        "type": "time"
-      }, {
-        "params": [
-          "null"
-        ],
-        "type": "fill"
-      }],
-      "measurement": "mem",
-      "orderByTime": "ASC",
-      "policy": "autogen",
-      "refId": "A",
-      "resultFormat": "time_series",
-      "select": [
-        [{
-          "params": [
-            "used_percent"
-          ],
-          "type": "field"
-        }, {
-          "params": [],
-          "type": "mean"
-        }]
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
       ],
-      "tags": []
-    }],
-    "thresholds": "50,80",
-    "title": "MEMORY USAGE",
-    "type": "singlestat",
-    "valueFontSize": "70%",
-    "valueMaps": [{
-      "op": "=",
-      "text": "N/A",
-      "value": "null"
-    }],
-    "valueName": "avg"
-  }, {
-    "aliasColors": {},
-    "bars": false,
-    "dashLength": 10,
-    "dashes": false,
-    "datasource": "InfluxDB-geo",
-    "decimals": 0,
-    "fill": 1,
-    "gridPos": {
-      "h": 10,
-      "w": 12,
-      "x": 0,
-      "y": 5
-    },
-    "id": 8,
-    "legend": {
-      "alignAsTable": false,
-      "avg": false,
-      "current": false,
-      "max": false,
-      "min": false,
-      "show": true,
-      "total": false,
-      "values": false
-    },
-    "lines": true,
-    "linewidth": 2,
-    "links": [],
-    "nullPointMode": "null",
-    "percentage": false,
-    "pointradius": 5,
-    "points": false,
-    "renderer": "flot",
-    "seriesOverrides": [],
-    "spaceLength": 10,
-    "stack": false,
-    "steppedLine": false,
-    "targets": [{
-      "alias": "Number of Requests",
-      "groupBy": [],
-      "hide": false,
-      "measurement": "nginx",
-      "orderByTime": "ASC",
-      "policy": "default",
-      "query": "SELECT sum(\"count\") FROM \"geodata\" WHERE $timeFilter GROUP BY time($__interval)",
-      "rawQuery": true,
-      "refId": "A",
-      "resultFormat": "time_series",
-      "select": [
-        [{
-          "params": [
-            "count"
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "last",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
           ],
-          "type": "field"
-        }, {
-          "params": [],
-          "type": "sum"
-        }]
+          "measurement": "geodata",
+          "orderByTime": "ASC",
+          "policy": "$rp",
+          "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": []
+        }
       ],
-      "tags": []
-    }],
-    "thresholds": [],
-    "timeFrom": null,
-    "timeRegions": [],
-    "timeShift": null,
-    "title": "REQUESTS",
-    "tooltip": {
-      "shared": true,
-      "sort": 0,
-      "value_type": "individual"
+      "thresholds": "",
+      "title": "TOTAL NUMBER OF REQUESTS SERVED",
+      "type": "singlestat",
+      "valueFontSize": "100%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "max"
     },
-    "type": "graph",
-    "xaxis": {
-      "buckets": null,
-      "mode": "time",
-      "name": null,
-      "show": true,
-      "values": []
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "#eab839",
+        "#d44a3a"
+      ],
+      "datasource": "InfluxDB",
+      "decimals": 1,
+      "format": "percent",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": true,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 7,
+        "y": 0
+      },
+      "id": 6,
+      "interval": null,
+      "links": [],
+      "mappingType": 2,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [],
+      "sparkline": {
+        "fillColor": "rgba(94, 92, 92, 0.24)",
+        "full": false,
+        "lineColor": "#1f78c1",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "cpu",
+          "orderByTime": "ASC",
+          "policy": "$rp",
+          "query": "SELECT mean(\"usage_user\") FROM \"$rp\".\"cpu\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "usage_user"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "50,80",
+      "timeFrom": null,
+      "title": "CPU USAGE",
+      "type": "singlestat",
+      "valueFontSize": "70%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
     },
-    "yaxes": [{
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "#eab839",
+        "#e24d42"
+      ],
+      "datasource": "InfluxDB",
+      "format": "percent",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": true,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 15,
+        "y": 0
+      },
+      "id": 10,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "options": {},
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "mem",
+          "orderByTime": "ASC",
+          "policy": "$rp",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "used_percent"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "50,80",
+      "title": "MEMORY USAGE",
+      "type": "singlestat",
+      "valueFontSize": "70%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "InfluxDB-geo",
       "decimals": 0,
-      "format": "short",
-      "label": "",
-      "logBase": 1,
-      "max": null,
-      "min": null,
-      "show": true
-    }, {
+      "fill": 1,
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 5
+      },
+      "id": 8,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {},
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Number of Requests",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "geodata",
+          "orderByTime": "ASC",
+          "policy": "$rp",
+          "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "REQUESTS",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "circleMaxSize": "10",
+      "circleMinSize": 2,
+      "colors": [
+        "#7eb26d",
+        "rgba(237, 129, 40, 0.89)",
+        "#ea6460"
+      ],
+      "datasource": "InfluxDB-geo",
       "decimals": 0,
-      "format": "short",
-      "label": "",
-      "logBase": 1,
-      "max": null,
-      "min": null,
-      "show": true
-    }],
-    "yaxis": {
-      "align": false,
-      "alignLevel": null
+      "esMetric": "Count",
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "hideEmpty": false,
+      "hideZero": false,
+      "id": 14,
+      "initialZoom": 1,
+      "links": [],
+      "locationData": "table",
+      "mapCenter": "(0°, 0°)",
+      "mapCenterLatitude": 0,
+      "mapCenterLongitude": 0,
+      "maxDataPoints": 1,
+      "mouseWheelZoom": false,
+      "options": {},
+      "showLegend": true,
+      "stickyLabels": false,
+      "tableQueryOptions": {
+        "geohashField": "geohash",
+        "labelField": "city",
+        "latitudeField": "latitude",
+        "longitudeField": "longitude",
+        "metricField": "total",
+        "queryType": "geohash"
+      },
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "geohash"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "city"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "geodata",
+          "orderByTime": "ASC",
+          "policy": "$rp",
+          "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter GROUP BY \"geohash\", \"city\"",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "count"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "100,1000",
+      "title": "Request From",
+      "type": "grafana-worldmap-panel",
+      "unitPlural": "",
+      "unitSingle": "",
+      "valueName": "total"
     }
-  }, {
-    "circleMaxSize": "10",
-    "circleMinSize": 2,
-    "colors": [
-      "#7eb26d",
-      "rgba(237, 129, 40, 0.89)",
-      "#ea6460"
-    ],
-    "datasource": "InfluxDB-geo",
-    "decimals": 0,
-    "esMetric": "Count",
-    "gridPos": {
-      "h": 10,
-      "w": 12,
-      "x": 12,
-      "y": 5
-    },
-    "hideEmpty": false,
-    "hideZero": false,
-    "id": 14,
-    "initialZoom": 1,
-    "links": [],
-    "locationData": "table",
-    "mapCenter": "(0°, 0°)",
-    "mapCenterLatitude": 0,
-    "mapCenterLongitude": 0,
-    "maxDataPoints": 1,
-    "mouseWheelZoom": false,
-    "showLegend": true,
-    "stickyLabels": false,
-    "tableQueryOptions": {
-      "geohashField": "geohash",
-      "labelField": "city",
-      "latitudeField": "latitude",
-      "longitudeField": "longitude",
-      "metricField": "total",
-      "queryType": "geohash"
-    },
-    "targets": [{
-      "groupBy": [{
-        "params": [
-          "geohash"
-        ],
-        "type": "tag"
-      }, {
-        "params": [
-          "city"
-        ],
-        "type": "tag"
-      }],
-      "measurement": "geodata",
-      "orderByTime": "ASC",
-      "policy": "default",
-      "query": "SELECT sum(\"count\") as total FROM \"geodata\" WHERE $timeFilter GROUP BY \"geohash\", \"city\"",
-      "rawQuery": true,
-      "refId": "A",
-      "resultFormat": "table",
-      "select": [
-        [{
-          "params": [
-            "count"
-          ],
-          "type": "field"
-        }, {
-          "params": [],
-          "type": "sum"
-        }]
-      ],
-      "tags": []
-    }],
-    "thresholds": "100,1000",
-    "title": "Request From",
-    "type": "grafana-worldmap-panel",
-    "unitPlural": "",
-    "unitSingle": "",
-    "valueName": "total"
-  }],
+  ],
   "refresh": false,
-  "schemaVersion": 16,
+  "schemaVersion": 18,
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "autogen",
+          "value": "autogen"
+        },
+        "datasource": "InfluxDB",
+        "definition": "select rp from forever.rp_config where $__to - $__from > \"start\" and $__to - $__from < \"end\"",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Retention Policy",
+        "multi": false,
+        "name": "rp",
+        "options": [],
+        "query": "select rp from forever.rp_config where $__to - $__from > \"start\" and $__to - $__from < \"end\"",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {

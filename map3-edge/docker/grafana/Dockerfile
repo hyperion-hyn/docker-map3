@@ -1,4 +1,4 @@
-FROM grafana/grafana:5.4.3
+FROM grafana/grafana:6.2.5
 
 COPY ./rootfs/entry.sh /entry.sh
 COPY ./rootfs/conf /usr/share/grafana/conf
