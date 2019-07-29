@@ -1,4 +1,0 @@
-configparser==3.5.0
-influxdb==5.2.0
-pygeoip==0.3.2
-Geohash==1.0

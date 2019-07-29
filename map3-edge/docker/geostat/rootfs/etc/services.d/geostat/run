@@ -1,4 +1,6 @@
 #!/usr/bin/with-contenv sh
 
-cd /opt/geostat && exec python /opt/geostat/geoparser.py
+/optimize-influxdb.sh
+
+exec /usr/bin/geostat
 

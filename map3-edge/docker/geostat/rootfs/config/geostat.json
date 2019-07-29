@@ -1,0 +1,12 @@
+{
+    "db": {
+      "host": "127.0.0.1",
+      "port": "8086",
+      "database": "geodata",
+      "username": "",
+      "password": "",
+      "measurement": "geodata",
+      "full_size": 100,
+      "insert_tim_int": 10
+    }
+  }
