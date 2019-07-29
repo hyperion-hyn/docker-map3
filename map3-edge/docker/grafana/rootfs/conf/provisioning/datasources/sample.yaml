@@ -52,7 +52,7 @@ apiVersion: 1
 #   # <bool> allow users to edit datasources from the UI.
 #   editable: false
 datasources:
- - name: InfluxDB
+ - name: telegraf
    type: influxdb
    typeLogoUrl: 'public/app/plugins/datasource/influxdb/img/influxdb_logo.svg'
    access: proxy
@@ -70,7 +70,7 @@ datasources:
    secureJsonFields: {}
    version: 1
    readOnly: false
- - name: InfluxDB-geo
+ - name: access
    type: influxdb
    typeLogoUrl: 'public/app/plugins/datasource/influxdb/img/influxdb_logo.svg'
    access: proxy

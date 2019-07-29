@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1564402682972,
+  "iteration": 1564405564198,
   "links": [],
   "panels": [
     {
@@ -27,7 +27,7 @@
         "#ba43a9",
         "#d44a3a"
       ],
-      "datasource": "InfluxDB-geo",
+      "datasource": "access",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -80,24 +80,11 @@
       "tableColumn": "last",
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
+          "groupBy": [],
           "measurement": "geodata",
           "orderByTime": "ASC",
           "policy": "$rp",
-          "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+          "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
@@ -142,7 +129,7 @@
         "#eab839",
         "#d44a3a"
       ],
-      "datasource": "InfluxDB",
+      "datasource": "telegraf",
       "decimals": 1,
       "format": "percent",
       "gauge": {
@@ -253,7 +240,7 @@
         "#eab839",
         "#e24d42"
       ],
-      "datasource": "InfluxDB",
+      "datasource": "telegraf",
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -360,7 +347,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "InfluxDB-geo",
+      "datasource": "access",
       "decimals": 0,
       "fill": 1,
       "gridPos": {
@@ -486,7 +473,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#ea6460"
       ],
-      "datasource": "InfluxDB-geo",
+      "datasource": "access",
       "decimals": 0,
       "esMetric": "Count",
       "gridPos": {
@@ -577,7 +564,7 @@
           "text": "autogen",
           "value": "autogen"
         },
-        "datasource": "InfluxDB",
+        "datasource": "telegraf",
         "definition": "select rp from forever.rp_config where $__to - $__from > \"start\" and $__to - $__from < \"end\"",
         "hide": 0,
         "includeAll": false,
