@@ -13,7 +13,7 @@ services:
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/reverse-proxy/:/var/log/caddy/
-      - ./config/caddy/prodcaddyfile:/etc/caddy/prodcaddyfile
+      - ./config/caddy/prodcaddyfile:/etc/caddy/prodcaddyfile:ro
       - ./public_html/:/var/run/caddy/public_html/
 
   #Filebeat container
@@ -60,7 +60,7 @@ services:
     restart: always
     volumes:
       - ./log/reverse-proxy/:/var/log/geostat/
-      - ./config/go-geostat/geostat.json:/etc/geostat/geostat.json
+      - ./config/go-geostat/geostat.json:/etc/geostat/geostat.json:ro
     depends_on:
       - reverse-proxy
 
