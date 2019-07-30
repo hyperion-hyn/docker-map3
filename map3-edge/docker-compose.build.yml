@@ -1,0 +1,30 @@
+version: "2.3"
+
+services:
+  reverse-proxy:
+    build:
+      context: ./docker/caddy/src
+
+  filebeat:
+    build:
+      context: ./docker/filebeat
+
+  influxdb:
+    build:
+      context: ./docker/influxdb
+
+  telegraf:
+    build:
+      context: ./docker/telegraf
+
+  grafana:
+    build:
+      context: ./docker/grafana
+
+  geostat:
+    build:
+      context: ./docker/geostat
+
+  ouroboros:
+    build:
+      context: ./docker/ouroboros/src

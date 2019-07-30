@@ -5,8 +5,6 @@ version: "2.3"
 services:
   reverse-proxy:
     image: docker.io/map3/caddy:0.618
-    build:
-      context: ./docker/caddy/src
     restart: always
     ports:
       - 80:80
@@ -22,8 +20,6 @@ services:
   filebeat:
     user: root
     image: docker.io/map3/filebeat:7.1
-    build:
-      context: ./docker/filebeat
     volumes:
       #Named volume fsdata. This is used to persist the registry file between restarts, so to avoid data duplication
       - fbdata:/usr/share/filebeat/data
@@ -36,8 +32,6 @@ services:
 
   influxdb:
     image: docker.io/map3/influxdb:1.7
-    build:
-      context: ./docker/influxdb
     restart: always
     volumes:
       - influxdb_data:/var/lib/influxdb
@@ -46,16 +40,12 @@ services:
 
   telegraf:
     image: docker.io/map3/telegraf:1.9
-    build:
-      context: ./docker/telegraf
     restart: always
     depends_on:
       - influxdb
 
   grafana:
     image: docker.io/map3/grafana:6.2
-    build:
-      context: ./docker/grafana
     restart: always
     ports:
       - 3000:3000 # grafana
@@ -67,8 +57,6 @@ services:
 
   geostat:
     image: docker.io/map3/go-geostat:1.0
-    build:
-      context: ./docker/geostat
     restart: always
     volumes:
       - ./log/reverse-proxy/:/var/log/geostat/
@@ -80,8 +68,6 @@ services:
     container_name: ouroboros
     hostname: ouroboros
     image: docker.io/map3/ouroboros:latest
-    build:
-      context: ./docker/ouroboros/src
     environment:
       - CLEANUP=true
       - CLEANUP_UNUSED_VOLUMES=true
