@@ -21,4 +21,4 @@ dev: build
 	docker-compose down --volumes --remove-orphans && docker-compose up --remove-orphans
 
 clean:
-	go clean -modcache
+	rm config.tar.gz
