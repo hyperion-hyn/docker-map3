@@ -1,0 +1,15 @@
+#mapillary sequence layer
+rewrite /api/v0.1/mapillary/sequence_layer {
+	r  (.*)
+	to /v0.1/{1}
+}
+
+proxy /v0.1 https://tiles3.mapillary.com
+
+cache {
+	match_path /api/mapillary/sequence_layer
+	match_header Content-Type application/vnd.mapbox-vector-tile
+	status_header X-Cache-Status-Map3-Edge
+	default_max_age 60m
+	path /etc/caddy/cache
+}
