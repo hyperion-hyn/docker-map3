@@ -6,3 +6,7 @@ url=git@github.com:hyperion-hyn/geostat.git
 	path = map3-edge/docker/ouroboros/src
 	url = https://github.com/hyperion-hyn/ouroboros.git
 	branch = master
+[submodule "map3-edge/docker/caddy/src"]
+	path = map3-edge/docker/caddy/src
+	url = https://github.com/hyperion-hyn/caddy-priv.git
+	branch = keyless
