@@ -4,7 +4,7 @@ version: "2.3"
 
 services:
   reverse-proxy:
-    image: map3/caddy:0.618
+    image: docker.io/map3/caddy:0.618
     build:
       context: ./docker/caddy/src
     restart: always
@@ -21,7 +21,7 @@ services:
   #Filebeat container
   filebeat:
     user: root
-    image: map3/filebeat:7.1
+    image: docker.io/map3/filebeat:7.1
     build:
       context: ./docker/filebeat
     volumes:
@@ -35,7 +35,7 @@ services:
     restart: on-failure
 
   influxdb:
-    image: map3/influxdb:1.7
+    image: docker.io/map3/influxdb:1.7
     build:
       context: ./docker/influxdb
     restart: always
@@ -45,7 +45,7 @@ services:
       - INFLUXDB_UDP_ENABLED=true
 
   telegraf:
-    image: map3/telegraf:1.9
+    image: docker.io/map3/telegraf:1.9
     build:
       context: ./docker/telegraf
     restart: always
@@ -53,7 +53,7 @@ services:
       - influxdb
 
   grafana:
-    image: map3/grafana:6.2
+    image: docker.io/map3/grafana:6.2
     build:
       context: ./docker/grafana
     restart: always
@@ -66,7 +66,7 @@ services:
       - telegraf
 
   geostat:
-    image: map3/go-geostat:1.0
+    image: docker.io/map3/go-geostat:1.0
     build:
       context: ./docker/geostat
     restart: always
@@ -79,7 +79,9 @@ services:
   ouroboros:
     container_name: ouroboros
     hostname: ouroboros
-    image: map3/ouroboros
+    image: docker.io/map3/ouroboros:latest
+    build:
+      context: ./docker/ouroboros/src
     environment:
       - CLEANUP=true
       - CLEANUP_UNUSED_VOLUMES=true
