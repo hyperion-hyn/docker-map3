@@ -1,24 +1,21 @@
 {
   "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": "-- Grafana --",
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "type": "dashboard"
-      }
-    ]
+    "list": [{
+      "builtIn": 1,
+      "datasource": "-- Grafana --",
+      "enable": true,
+      "hide": true,
+      "iconColor": "rgba(0, 211, 255, 1)",
+      "name": "Annotations & Alerts",
+      "type": "dashboard"
+    }]
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1564405564198,
+  "iteration": 1564467606415,
   "links": [],
-  "panels": [
-    {
+  "panels": [{
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": false,
@@ -46,8 +43,7 @@
       "interval": null,
       "links": [],
       "mappingType": 1,
-      "mappingTypes": [
-        {
+      "mappingTypes": [{
           "name": "value to text",
           "value": 1
         },
@@ -64,13 +60,11 @@
       "postfixFontSize": "50%",
       "prefix": "",
       "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
+      "rangeMaps": [{
+        "from": "null",
+        "text": "N/A",
+        "to": "null"
+      }],
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -78,44 +72,39 @@
         "show": false
       },
       "tableColumn": "last",
-      "targets": [
-        {
-          "groupBy": [],
-          "measurement": "geodata",
-          "orderByTime": "ASC",
-          "policy": "$rp",
-          "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
+      "targets": [{
+        "groupBy": [],
+        "measurement": "geodata",
+        "orderByTime": "ASC",
+        "policy": "$rp",
+        "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter",
+        "rawQuery": false,
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [{
+              "params": [
+                "count"
+              ],
+              "type": "field"
+            },
+            {
+              "params": [],
+              "type": "sum"
+            }
+          ]
+        ],
+        "tags": []
+      }],
       "thresholds": "",
       "title": "TOTAL NUMBER OF REQUESTS SERVED",
       "type": "singlestat",
       "valueFontSize": "100%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
+      "valueMaps": [{
+        "op": "=",
+        "text": "N/A",
+        "value": "null"
+      }],
       "valueName": "max"
     },
     {
@@ -149,8 +138,7 @@
       "interval": null,
       "links": [],
       "mappingType": 2,
-      "mappingTypes": [
-        {
+      "mappingTypes": [{
           "name": "value to text",
           "value": 1
         },
@@ -175,58 +163,52 @@
         "show": true
       },
       "tableColumn": "",
-      "targets": [
-        {
-          "groupBy": [
-            {
+      "targets": [{
+        "groupBy": [{
+            "params": [
+              "$interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "measurement": "cpu",
+        "orderByTime": "ASC",
+        "policy": "$rp",
+        "query": "SELECT mean(\"usage_user\") FROM \"$rp\".\"cpu\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+        "rawQuery": false,
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [{
               "params": [
-                "$interval"
+                "usage_user"
               ],
-              "type": "time"
+              "type": "field"
             },
             {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
+              "params": [],
+              "type": "mean"
             }
-          ],
-          "measurement": "cpu",
-          "orderByTime": "ASC",
-          "policy": "$rp",
-          "query": "SELECT mean(\"usage_user\") FROM \"$rp\".\"cpu\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "usage_user"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
+          ]
+        ],
+        "tags": []
+      }],
       "thresholds": "50,80",
       "timeFrom": null,
       "title": "CPU USAGE",
       "type": "singlestat",
       "valueFontSize": "70%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
+      "valueMaps": [{
+        "op": "=",
+        "text": "N/A",
+        "value": "null"
+      }],
       "valueName": "current"
     },
     {
@@ -259,8 +241,7 @@
       "interval": null,
       "links": [],
       "mappingType": 1,
-      "mappingTypes": [
-        {
+      "mappingTypes": [{
           "name": "value to text",
           "value": 1
         },
@@ -277,13 +258,11 @@
       "postfixFontSize": "50%",
       "prefix": "",
       "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
+      "rangeMaps": [{
+        "from": "null",
+        "text": "N/A",
+        "to": "null"
+      }],
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -291,55 +270,49 @@
         "show": true
       },
       "tableColumn": "",
-      "targets": [
-        {
-          "groupBy": [
-            {
+      "targets": [{
+        "groupBy": [{
+            "params": [
+              "$__interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "measurement": "mem",
+        "orderByTime": "ASC",
+        "policy": "$rp",
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [{
               "params": [
-                "$__interval"
+                "used_percent"
               ],
-              "type": "time"
+              "type": "field"
             },
             {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
+              "params": [],
+              "type": "mean"
             }
-          ],
-          "measurement": "mem",
-          "orderByTime": "ASC",
-          "policy": "$rp",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "used_percent"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
+          ]
+        ],
+        "tags": []
+      }],
       "thresholds": "50,80",
       "title": "MEMORY USAGE",
       "type": "singlestat",
       "valueFontSize": "70%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
+      "valueMaps": [{
+        "op": "=",
+        "text": "N/A",
+        "value": "null"
+      }],
       "valueName": "avg"
     },
     {
@@ -380,48 +353,44 @@
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
-      "targets": [
-        {
-          "alias": "Number of Requests",
-          "groupBy": [
-            {
+      "targets": [{
+        "alias": "Number of Requests",
+        "groupBy": [{
+            "params": [
+              "$interval"
+            ],
+            "type": "time"
+          },
+          {
+            "params": [
+              "null"
+            ],
+            "type": "fill"
+          }
+        ],
+        "hide": false,
+        "measurement": "geodata",
+        "orderByTime": "ASC",
+        "policy": "$rp",
+        "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
+        "rawQuery": false,
+        "refId": "A",
+        "resultFormat": "time_series",
+        "select": [
+          [{
               "params": [
-                "$interval"
+                "count"
               ],
-              "type": "time"
+              "type": "field"
             },
             {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
+              "params": [],
+              "type": "sum"
             }
-          ],
-          "hide": false,
-          "measurement": "geodata",
-          "orderByTime": "ASC",
-          "policy": "$rp",
-          "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter GROUP BY time($interval) fill(null)",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
+          ]
+        ],
+        "tags": []
+      }],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
@@ -440,8 +409,7 @@
         "show": true,
         "values": []
       },
-      "yaxes": [
-        {
+      "yaxes": [{
           "decimals": 0,
           "format": "short",
           "label": "",
@@ -504,46 +472,42 @@
         "metricField": "total",
         "queryType": "geohash"
       },
-      "targets": [
-        {
-          "groupBy": [
-            {
+      "targets": [{
+        "groupBy": [{
+            "params": [
+              "geohash"
+            ],
+            "type": "tag"
+          },
+          {
+            "params": [
+              "city"
+            ],
+            "type": "tag"
+          }
+        ],
+        "measurement": "geodata",
+        "orderByTime": "ASC",
+        "policy": "$rp",
+        "query": "SELECT sum(\"count\") as total FROM \"$rp\".\"geodata\" WHERE $timeFilter GROUP BY \"geohash\", \"city\"",
+        "rawQuery": true,
+        "refId": "A",
+        "resultFormat": "table",
+        "select": [
+          [{
               "params": [
-                "geohash"
+                "count"
               ],
-              "type": "tag"
+              "type": "field"
             },
             {
-              "params": [
-                "city"
-              ],
-              "type": "tag"
+              "params": [],
+              "type": "sum"
             }
-          ],
-          "measurement": "geodata",
-          "orderByTime": "ASC",
-          "policy": "$rp",
-          "query": "SELECT sum(\"count\") FROM \"$rp\".\"geodata\" WHERE $timeFilter GROUP BY \"geohash\", \"city\"",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "count"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
+          ]
+        ],
+        "tags": []
+      }],
       "thresholds": "100,1000",
       "title": "Request From",
       "type": "grafana-worldmap-panel",
@@ -557,33 +521,31 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {
-          "text": "autogen",
-          "value": "autogen"
-        },
-        "datasource": "telegraf",
-        "definition": "select rp from forever.rp_config where $__to - $__from > \"start\" and $__to - $__from < \"end\"",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Retention Policy",
-        "multi": false,
-        "name": "rp",
-        "options": [],
-        "query": "select rp from forever.rp_config where $__to - $__from > \"start\" and $__to - $__from < \"end\"",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      }
-    ]
+    "list": [{
+      "allValue": null,
+      "current": {
+        "text": "autogen",
+        "value": "autogen"
+      },
+      "datasource": "telegraf",
+      "definition": "select rp from forever.rp_config where $__to - $__from > \"start\" and $__to - $__from < \"end\"",
+      "hide": 0,
+      "includeAll": false,
+      "label": "Retention Policy",
+      "multi": false,
+      "name": "rp",
+      "options": [],
+      "query": "select rp from forever.rp_config where $__to - $__from > \"start\" and $__to - $__from < \"end\"",
+      "refresh": 2,
+      "regex": "",
+      "skipUrlSync": false,
+      "sort": 0,
+      "tagValuesQuery": "",
+      "tags": [],
+      "tagsQuery": "",
+      "type": "query",
+      "useTags": false
+    }]
   },
   "time": {
     "from": "now-1h",

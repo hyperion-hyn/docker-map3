@@ -8,7 +8,6 @@ services:
     restart: always
     ports:
       - 80:80
-      - 443:443
     entrypoint: ["/usr/local/bin/caddy", "-conf", "/etc/caddy/prodcaddyfile"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
@@ -35,8 +34,6 @@ services:
     restart: always
     volumes:
       - influxdb_data:/var/lib/influxdb
-    environment:
-      - INFLUXDB_UDP_ENABLED=true
 
   telegraf:
     image: docker.io/map3/telegraf:1.9
