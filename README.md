@@ -1,12 +1,11 @@
 # docker-map3
 
-## edge
-编译镜像并运行
-````
-docker-compose down --remove-orphans && docker-compose up --build
-````
+## Structure
+### map3-core
+used by map data provider.
 
-拉取镜像并运行
-````
-docker-compose down --remove-orphans && docker-compose up --no-build
-````
+### map3-edge
+to launch a map3 service node.
+
+### map3-edge-in-docker
+to package all nessary files in a docker image.
