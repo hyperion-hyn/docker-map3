@@ -14,21 +14,17 @@ wget -qO- https://hyperion-deploy.s3-ap-southeast-1.amazonaws.com/edge/install.s
 
 ### clean volumes, build and run
 ````
-docker-compose -f docker-compose.yml -f docker-compose.build.yml build && docker-compose down --volumes --remove-orphans && docker-compose up --remove-orphans 
+make dev
 ````
 
 ### build and run
 ````
-docker-compose -f docker-compose.yml -f docker-compose.build.yml build && docker-compose down --remove-orphans && docker-compose up --remove-orphans 
+make build && make run
 ````
 
 ### pull and run
 ````
-docker-compose pull && docker-compose down --remove-orphans && docker-compose up --remove-orphans
-````
-###
-````
-docker-compose down --remove-orphans && docker-compose up --remove-orphans
+make run
 ````
 
 # Development
@@ -39,11 +35,11 @@ docker login -u <USER>
 ````
 ### Build
 ````
-docker-compose -f docker-compose.yml -f docker-compose.build.yml build 
+make build
 ````
 ### Push
 ````
-cat docker-compose.yml | grep image | sed 's/^[ ]*image://' | sed -n '/map3/p' | xargs -I{} docker push {}
+make push-to-dockerhub
 ````
 
 ## AWS
@@ -64,9 +60,7 @@ source ~/bin/aws-env.sh <PROFILE>
 #### Upload files
 upload installation files to s3.
 ````
-aws s3 cp --acl public-read ./install.sh s3://hyperion-deploy/edge/install.sh
-aws s3 cp --acl public-read ./docker-compose.yml s3://hyperion-deploy/edge/docker-compose.yml
-find ./config -type f -iname '*' ! -name '.DS_Store' | sed 's,\./,,' | xargs -I{} aws s3 cp --acl public-read ./{} s3://hyperion-deploy/edge/{}
+make push-to-s3
 ````
 
 
