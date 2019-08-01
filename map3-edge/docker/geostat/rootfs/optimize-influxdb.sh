@@ -19,10 +19,10 @@ CREATE RETENTION POLICY \"week\" ON $database DURATION 7d REPLICATION 1;
 CREATE RETENTION POLICY \"month\" ON $database DURATION 31d REPLICATION 1;
 CREATE RETENTION POLICY \"year\" ON $database DURATION 366d REPLICATION 1;
 
-CREATE CONTINUOUS QUERY \"cq_day\" ON \"$database\" BEGIN SELECT mean(count) as count INTO \"$database\".\"day\".:MEASUREMENT FROM /.*/ GROUP BY time(60s),* END;
-CREATE CONTINUOUS QUERY \"cq_week\" ON \"$database\" BEGIN SELECT mean(count) as count INTO \"$database\".\"week\".:MEASUREMENT FROM /.*/ GROUP BY time(300s),* END;
-CREATE CONTINUOUS QUERY \"cq_month\" ON \"$database\" BEGIN SELECT mean(count) as count INTO \"$database\".\"month\".:MEASUREMENT FROM /.*/ GROUP BY time(1800s),* END;
-CREATE CONTINUOUS QUERY \"cq_year\" ON \"$database\" BEGIN SELECT mean(count) as count INTO \"$database\".\"year\".:MEASUREMENT FROM /.*/ GROUP BY time(21600s),* END;
+CREATE CONTINUOUS QUERY \"cq_day\" ON \"$database\" BEGIN SELECT sum(count) as count INTO \"$database\".\"day\".:MEASUREMENT FROM /.*/ GROUP BY time(60s),* END;
+CREATE CONTINUOUS QUERY \"cq_week\" ON \"$database\" BEGIN SELECT sum(count) as count INTO \"$database\".\"week\".:MEASUREMENT FROM /.*/ GROUP BY time(300s),* END;
+CREATE CONTINUOUS QUERY \"cq_month\" ON \"$database\" BEGIN SELECT sum(count) as count INTO \"$database\".\"month\".:MEASUREMENT FROM /.*/ GROUP BY time(1800s),* END;
+CREATE CONTINUOUS QUERY \"cq_year\" ON \"$database\" BEGIN SELECT sum(count) as count INTO \"$database\".\"year\".:MEASUREMENT FROM /.*/ GROUP BY time(21600s),* END;
 
 CREATE RETENTION POLICY \"forever\" ON \"$database\" DURATION INF REPLICATION 1;
 "
