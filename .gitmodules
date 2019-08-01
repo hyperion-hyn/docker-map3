@@ -2,11 +2,11 @@
 	path = map3-edge/docker/geostat/src
 url=git@github.com:hyperion-hyn/geostat.git
 	branch = master
-[submodule "map3-edge/docker/caddy/src"]
-	path = map3-edge/docker/caddy/src
-url=git@github.com:hyperion-hyn/caddy.git
-	branch = map3
 [submodule "map3-edge/docker/ouroboros/src"]
 	path = map3-edge/docker/ouroboros/src
 	url = https://github.com/hyperion-hyn/ouroboros.git
 	branch = master
+[submodule "map3-edge/docker/caddy/src"]
+	path = map3-edge/docker/caddy/src
+	url = https://github.com/hyperion-hyn/caddy-priv.git
+	branch = keyless

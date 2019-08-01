@@ -1,0 +1,26 @@
+#nasa earth data
+#Cache-Control: no-cache, no-store, must-revalidate
+
+# Blue Marble
+# https://tile.map3.network/api/nasa/blue_marble/7/21/31.jpeg
+rewrite /api/v0.1/nasa/blue_marble {
+    r  (.*)
+    to /wmts/epsg4326/best/BlueMarble_ShadedRelief_Bathymetry/default//500m/{1}
+}
+
+# Land Water
+# https://tile.map3.network/api/nasa/land_water/7/21/31.png
+rewrite /api/v0.1/nasa/land_water {
+    r  (.*)
+    to /wmts/epsg4326/best/OSM_Land_Water_Map/default//250m/{1}
+}
+
+# True Color
+# https://tile.map3.network/api/nasa/true_color/7/21/31.jpeg
+rewrite /api/v0.1/nasa/true_color {
+    r  (.*)
+    to /wmts/epsg4326/best/MODIS_Terra_CorrectedReflectance_TrueColor/default//250m/{1}
+}
+
+proxy /wmts/epsg4326/best https://gibs.earthdata.nasa.gov
+
