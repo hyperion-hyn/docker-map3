@@ -8,11 +8,14 @@ services:
     restart: always
     ports:
       - 80:80
+      - 443:443
     entrypoint: ["/usr/local/bin/caddy", "-conf", "/etc/caddy/prodcaddyfile"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/reverse-proxy/:/var/log/caddy/
       - ./config/caddy/prodcaddyfile:/etc/caddy/prodcaddyfile:ro
+      - ./config/caddy/certs/tile-server.pem:/etc/caddy/tile-server.pem:ro
+      - ./config/caddy/certs/tile-ca.pem:/etc/caddy/tile-ca.pem:ro
       - ./public_html/:/var/run/caddy/public_html/
 
   #Filebeat container
