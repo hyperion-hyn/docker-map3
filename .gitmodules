@@ -10,3 +10,6 @@ url=git@github.com:hyperion-hyn/geostat.git
 	path = map3-edge/docker/caddy/src
 	url = https://github.com/hyperion-hyn/caddy-priv.git
 	branch = keyless
+[submodule "map3-edge/docker/grafana/src"]
+	path = map3-edge/docker/grafana/src
+	url = git@github.com:hyperion-hyn/grafana-docker.git
