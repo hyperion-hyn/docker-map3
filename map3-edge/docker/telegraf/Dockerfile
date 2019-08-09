@@ -1,4 +1,4 @@
-FROM telegraf:1.9-alpine
+FROM map3/telegraf-custom-plugin-alpine:1.11
 
 RUN apk add --no-cache curl
 
