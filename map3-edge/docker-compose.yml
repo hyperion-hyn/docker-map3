@@ -39,7 +39,7 @@ services:
       - influxdb_data:/var/lib/influxdb
 
   telegraf:
-    image: docker.io/map3/telegraf:1.9
+    image: docker.io/map3/telegraf:1.11
     restart: always
     depends_on:
       - influxdb
