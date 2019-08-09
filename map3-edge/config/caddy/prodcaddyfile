@@ -14,6 +14,10 @@
 	push
 	header / Access-Control-Allow-Origin *
 
+    realip {
+        from 0.0.0.0/0
+    }
+
     log / /var/log/caddy/access.log "{combined} {latency_ms}" {
         except /v1/debug/var
 		rotate_size 50  # Rotate after 50 MB
