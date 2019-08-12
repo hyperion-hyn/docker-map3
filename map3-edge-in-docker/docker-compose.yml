@@ -15,7 +15,7 @@ services:
   ouroboros:
     container_name: ouroboros
     hostname: ouroboros
-    image: pyouroboros/ouroboros
+    image: map3/ouroboros
     environment:
       - CLEANUP=true
       - INTERVAL=300
