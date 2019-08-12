@@ -3,6 +3,9 @@ version: "2.3"
 services:
   map3:
     image: map3/deploy-edge:latest
+    build: 
+      context: ../
+      dockerfile: map3-edge-in-docker/Dockerfile
     ports:
       - 80:80
       - 443:443
@@ -10,7 +13,7 @@ services:
     restart: always
     privileged: true
     volumes:
-      - ./data/:/var/lib/docker/volumes/
+      - volume_data:/var/lib/docker/
 
   ouroboros:
     container_name: ouroboros
@@ -26,3 +29,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  volume_data:
+    driver: local
