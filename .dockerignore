@@ -1,0 +1,4 @@
+./map3-core
+./map3-edge/docker/caddy/src/*
+./map3-edge/docker/geostat/src/*
+./map3-edge/docker/ouroboros/src/*
