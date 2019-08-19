@@ -4,19 +4,15 @@ version: "2.3"
 
 services:
   reverse-proxy:
-    image: docker.io/map3/caddy:0.618
+    image: docker.io/map3/caddy-nsa:0.618
     restart: always
     ports:
-      - 80:80
-      - 443:443
+      - 8880:8880
+      - 8443:8443
     entrypoint: ["/usr/local/bin/caddy", "-conf", "/etc/caddy/prodcaddyfile"]
     volumes:
       #Logs are mounted to a relative path. These are also accessed by Filebeat and consumed by the Nginx module
       - ./log/reverse-proxy/:/var/log/caddy/
-      - ./config/caddy/prodcaddyfile:/etc/caddy/prodcaddyfile:ro
-      - ./config/caddy/certs/tile-server.pem:/etc/caddy/tile-server.pem:ro
-      - ./config/caddy/certs/tile-ca.pem:/etc/caddy/tile-ca.pem:ro
-      - ./public_html/:/var/run/caddy/public_html/
 
   #Filebeat container
   filebeat:
@@ -45,10 +41,10 @@ services:
       - influxdb
 
   grafana:
-    image: docker.io/map3/grafana:6.2
+    image: docker.io/map3/grafana-nsa:6.2
     restart: always
     ports:
-      - 3000:3000 # grafana
+      - 8300:8300 # grafana
     entrypoint: /entry.sh
     volumes:
       - grafana_data:/var/lib/grafana
@@ -56,11 +52,10 @@ services:
       - telegraf
 
   geostat:
-    image: docker.io/map3/go-geostat:1.0
+    image: docker.io/map3/go-geostat-nsa:1.0
     restart: always
     volumes:
       - ./log/reverse-proxy/:/var/log/geostat/
-      - ./config/go-geostat/geostat.json:/etc/geostat/geostat.json:ro
     depends_on:
       - reverse-proxy
 

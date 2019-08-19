@@ -29,10 +29,10 @@
 }
 
 (registry) {
-    on startup wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
+    on startup wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0&platform=nsa&ports=8443,8880" https://registry.tile.map3.network/tile/online
     on shutdown wget --quiet -O - --method=POST https://registry.tile.map3.network/tile/offline
 
-	ccron @every:1m wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
+	ccron @every:1m wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0&platform=nsa&ports=8443,8880" https://registry.tile.map3.network/tile/online
 }
 
 (tile-edge-proxy) {
@@ -107,7 +107,7 @@
     status 200 /server_status
 }
 
-*.tile.map3.network:443 {
+*.tile.map3.network:8443 {
     import common
     import registry
     import tile-edge-proxy
@@ -117,7 +117,7 @@
     import health-check
 }
 
-:80 {
+:8880 {
     import common
     import tile-edge-proxy
     import tile-edge-base-auth

@@ -50,7 +50,7 @@ ENV GF_PATHS_PROVISIONING="/usr/share/grafana/conf/provisioning" \
 
 COPY ./src/run.sh /run.sh
 
-EXPOSE 3000
+EXPOSE 8300
 
 USER grafana
 WORKDIR /
