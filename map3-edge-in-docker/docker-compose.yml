@@ -2,7 +2,7 @@ version: "2.3"
 
 services:
   map3:
-    image: map3/deploy-edge-nsa:latest
+    image: map3/deploy-edge-nas:latest
     build: 
       context: ../
       dockerfile: map3-edge-in-docker/Dockerfile
