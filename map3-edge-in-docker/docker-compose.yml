@@ -2,14 +2,14 @@ version: "2.3"
 
 services:
   map3:
-    image: map3/deploy-edge:latest
+    image: map3/deploy-edge-nsa:latest
     build: 
       context: ../
       dockerfile: map3-edge-in-docker/Dockerfile
     ports:
-      - 80:80
-      - 443:443
-      - 3000:3000
+      - 8880:8880
+      - 8443:8443
+      - 8300:8300
     restart: always
     privileged: true
     volumes:

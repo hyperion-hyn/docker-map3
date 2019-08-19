@@ -17,6 +17,6 @@ RUN chmod a+x /bash/docker-compose-up.sh
 
 COPY ./map3-edge /src
 
-EXPOSE 80 443 3000
+EXPOSE 8880 8443 8300
 
 ENTRYPOINT [ "/init" ]
