@@ -29,7 +29,7 @@
 }
 
 (registry) {
-    on startup wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online
+    on startup wget --quiet -O - --method=POST --body-data="keyless=false&version=1.0.0" https://registry.tile.map3.network/tile/online
     on shutdown wget --quiet -O - --method=POST https://registry.tile.map3.network/tile/offline
 
 	ccron @every:1m wget --quiet -O - --method=POST --body-data="keyless=true&version=1.0.0" https://registry.tile.map3.network/tile/online

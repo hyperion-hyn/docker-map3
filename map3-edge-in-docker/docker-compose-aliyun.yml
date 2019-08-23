@@ -2,7 +2,7 @@ version: "2.3"
 
 services:
   map3:
-    image: map3/deploy-edge-aliyun:latest
+    image: map3/deploy-edge-dind:aliyun-latest
     ports:
       - 80:80
       - 443:443
@@ -10,12 +10,12 @@ services:
     restart: always
     privileged: true
     volumes:
-      - ./data/:/var/lib/docker/volumes/
+      - volume_data/:/var/lib/docker/volumes/
 
   ouroboros:
     container_name: ouroboros
     hostname: ouroboros
-    image: pyouroboros/ouroboros
+    image: map3/ouroboros
     environment:
       - CLEANUP=true
       - INTERVAL=300
@@ -26,3 +26,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+volumes: 
+  volume_data:
+    driver: local
