@@ -65,25 +65,6 @@
     }
 }
 
-(tile-edge-auth) {
-	tls keyless key.tile.map3.network:5001 /etc/caddy/tile-server.pem /etc/caddy/tile-ca.pem
-	jwt {
-        path /v1/api/tile/
-    #    publickey /etc/caddy/jwt-key.pub
-    #    allow ml mapstore
-    #    allow ml map3free
-         passthrough
-    }
-
-	jwt {
-        path /api/v1/hyn/
-        # publickey /etc/caddy/jwt-key.pub
-        # allow ml mapstore
-        # allow ml map3free
-        passthrough
-    }
-}
-
 (tile-edge-base-auth) {
 	jwt {
         path /v1/api/tile/
@@ -107,11 +88,19 @@
     status 200 /server_status
 }
 
-*.tile.map3.network:443 {
+:443 {
+    tls {
+        protocols tls1.2
+    }
+    keyless_client {
+        sign_endpoint https://key.tile.map3.network/map3/keyless/sign
+        decrypt_endpoint https://key.tile.map3.network/map3/keyless/decrypt
+        certificate /etc/caddy/tile-server.pem
+    }
     import common
     import registry
     import tile-edge-proxy
-    import tile-edge-auth
+    import tile-edge-base-auth
     import osm-tile-cache
     import pkg/thirdparty/*
     import health-check
