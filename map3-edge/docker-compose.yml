@@ -63,20 +63,20 @@ services:
     depends_on:
       - reverse-proxy
 
-  #ouroboros:
-  #  container_name: ouroboros
-  #  hostname: ouroboros
-  #  image: docker.io/map3/ouroboros:latest
-  #  environment:
-  #    - CLEANUP=true
-  #    - CLEANUP_UNUSED_VOLUMES=true
-  #    - INTERVAL=100
-  #    - LOG_LEVEL=INFO
-  #    - SELF_UPDATE=true
-  #    - TZ=Asia/Shanghai
-  #  restart: unless-stopped
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock
+  ouroboros:
+    container_name: ouroboros
+    hostname: ouroboros
+    image: docker.io/map3/ouroboros:latest
+    environment:
+      - CLEANUP=true
+      - CLEANUP_UNUSED_VOLUMES=true
+      - INTERVAL=100
+      - LOG_LEVEL=INFO
+      - SELF_UPDATE=true
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   #Filebeat data i.e. registry file
