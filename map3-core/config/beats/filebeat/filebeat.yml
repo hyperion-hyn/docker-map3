@@ -12,26 +12,18 @@ filebeat.autodiscover:
     - type: docker
       hints.enabled: true
 
-# filebeat.inputs:
-#   - type: log
-#     paths:
-#       - '/var/log/map3/*.log'
-#       - '/var/log/nginx/*.log'
+output.elasticsearch:
+  hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
+  protocol: "https"
+  username: "filebeat"
+  password: "l3OaUM&L3z#sbl*r"
+#  index: "filebeat-%{[agent.version]}-%{+yyyy.MM}"
 
-processors:
-  - add_cloud_metadata: ~
+setup.template:
+  name: "filebeat"
+  pattern: "filebeat-*"
+  enabled: false
+#  overwrite: true
 
-output.logstash:
-  codec.json:
-    pretty: true
-    escape_html: false
-  hosts: ["logstash.map3.network:5044"]
-  loadbalance: true
-#output.logstash:
-#  hosts: ["logstash.map3.network:5044"]
-#  loadbalance: true
-
-#output.elasticsearch:
-#  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
-#  username: '${ELASTICSEARCH_USERNAME:}'
-#  password: '${ELASTICSEARCH_PASSWORD:}'
+#setup.ilm.enabled: false
+#https://github.com/elastic/beats/issues/11866

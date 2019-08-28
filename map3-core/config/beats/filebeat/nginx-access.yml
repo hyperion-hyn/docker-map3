@@ -1,0 +1,12 @@
+type: log
+paths:
+  {{ range $i, $path := .paths }}
+- {{$path}}
+  {{ end }}
+exclude_files: [".gz$"]
+exclude_lines: [".*v1/debug/var.*", ".*favicon.ico.*", ".*GET /.*Wget.*"]
+
+  {{ if .convert_timezone }}
+processors:
+  - add_locale: ~
+  {{ end }}
