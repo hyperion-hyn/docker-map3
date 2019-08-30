@@ -6,6 +6,12 @@ metricbeat.config:
     # Reload module configs as they change:
     reload.enabled: false
 
+fields_under_root: true
+fields:
+  project: map3-core
+  map3:
+    version: 1.0.0
+
 metricbeat.autodiscover:
   providers:
     - type: docker
@@ -23,23 +29,61 @@ metricbeat.modules:
       - "memory"
       - "network"
     hosts: ["unix:///var/run/docker.sock"]
-    period: 60s
+    period: 1m
+    processors:
+      - drop_event.when.or:
+          - regexp:
+              container.image.name: "map3/core.*"
+          - regexp:
+              container.image.name: "map3/filebeat"
+          - regexp:
+              container.image.name: "map3/metricbeat.*"
+          - regexp:
+              container.image.name: "map3/logrotate.*"
+          - equals:
+              container.image.name: "alpine:latest"
     enabled: true
 
 processors:
   - add_cloud_metadata: ~
 
-output.logstash:
-  codec.json:
-    pretty: true
-    escape_html: false
-  hosts: ["logstash.map3.network:5044"]
-  loadbalance: true
-#output.logstash:
-#  hosts: ["logstash.map3.network:5044"]
-#  loadbalance: true
+output.elasticsearch:
+  hosts: ["422e2cc13f9d4a26a0bde7f53e7c4c55.ap-southeast-1.aws.found.io:9243"]
+  protocol: "https"
+  username: "metricbeat"
+  password: "xQuqtk7lNyN9qebb"
+  # using elastic search ingest geoip, one time setup to cluster
+  # https://www.elastic.co/guide/en/elasticsearch/reference/7.1/geoip-processor.html
+  pipeline: geoip
+  #PUT _ingest/pipeline/geoip
+  #  {
+  #    "geoip": {
+  #      "description": "Add geoip info",
+  #      "processors": [
+  #      {
+  #        "geoip": {
+  #          "field": "host.name",
+  #          "target_field": "map3.geo",
+  #          "ignore_failure": true
+  #        }
+  #      },
+  #      {
+  #        "geoip": {
+  #          "field": "nginx.access.remote_ip",
+  #          "target_field": "remote.geo",
+  #          "ignore_failure": true
+  #        }
+  #      }
+  #      ]
+  #    }
+  #  }
+#  index: "metricbeat-%{[agent.version]}-%{+yyyy.MM}"
 
-#output.elasticsearch:
-#  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
-#  username: '${ELASTICSEARCH_USERNAME:}'
-#  password: '${ELASTICSEARCH_PASSWORD:}'
+setup.template:
+  name: "metricbeat"
+  pattern: "metricbeat-*"
+  enabled: false
+#  overwrite: true
+
+#setup.ilm.enabled: false
+#https://github.com/elastic/beats/issues/11866

@@ -39,7 +39,7 @@ services:
   #Filebeat container
   filebeat:
     user: root
-    image: elastic/filebeat:7.1.0
+    image: map3/filebeat:7.1
     network_mode: "service:pause"
     volumes:
       #Mount the filebeat configuration so users can make edit
@@ -62,7 +62,7 @@ services:
   #Metricbeat container
   metricbeat:
     user: root
-    image: elastic/metricbeat:7.1.0
+    image: map3/metricbeat:7.1
     network_mode: "service:pause"
     volumes:
       #Mount the metricbeat configuration so users can make edit
