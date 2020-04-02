@@ -63,6 +63,14 @@ services:
     depends_on:
       - reverse-proxy
 
+  node-staking:
+    image: docker.io/map3/node-staking:1.0
+    restart: always
+    volumes:
+      - ./public_html/node-info.json:/go/bin/map3-edge-staking/configs/node-info.json:rw
+    depends_on:
+      - reverse-proxy
+
   ouroboros:
     container_name: ouroboros
     hostname: ouroboros

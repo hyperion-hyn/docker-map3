@@ -28,3 +28,7 @@ services:
   ouroboros:
     build:
       context: ./docker/ouroboros/src
+
+  node-staking:
+    build:
+      context: ./docker/node-staking/src
