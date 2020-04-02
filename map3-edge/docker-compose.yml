@@ -4,7 +4,7 @@ version: "2.3"
 
 services:
   reverse-proxy:
-    image: docker.io/map3/caddy:0.618
+    image: docker.io/map3/caddy:0.619
     restart: always
     ports:
       - 80:80

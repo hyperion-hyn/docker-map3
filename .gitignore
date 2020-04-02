@@ -10,3 +10,4 @@ metadata.db
 map3-edge-in-docker/data/src_fbdata
 map3-edge-in-docker/data/src_grafana_data
 map3-edge-in-docker/data/src_influxdb_data
+settings.json
