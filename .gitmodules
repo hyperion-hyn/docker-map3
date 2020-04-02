@@ -13,3 +13,6 @@ url=git@github.com:hyperion-hyn/geostat.git
 [submodule "map3-edge/docker/grafana/src"]
 	path = map3-edge/docker/grafana/src
 	url = git@github.com:hyperion-hyn/grafana-docker.git
+[submodule "map3-edge/docker/node-staking/src"]
+	path = map3-edge/docker/node-staking/src
+	url = git@github.com:hyperion-hyn/map3-edge-staking.git
