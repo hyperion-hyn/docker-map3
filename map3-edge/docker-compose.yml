@@ -17,6 +17,13 @@ services:
       - ./config/caddy/certs/tile-server.pem:/etc/caddy/tile-server.pem:ro
       - ./public_html/:/var/run/caddy/public_html/
 
+  map3-node:
+    image: nginx:1.17-alpine
+    restart: unless-stopped
+    volumes:
+      - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./public_html/:/usr/share/nginx/html/
+
   #Filebeat container
   filebeat:
     user: root

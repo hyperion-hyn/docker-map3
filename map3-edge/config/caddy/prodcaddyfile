@@ -7,10 +7,10 @@
 # /wmts/epsg4326/best | https://gibs.earthdata.nasa.gov
 
 (common) {
-    root /var/run/caddy/public_html
-    index index.html
-	browse
-	gzip
+    # root /var/run/caddy/public_html
+    # index index.html
+	# browse
+	# gzip
 	push
 	header / Access-Control-Allow-Origin *
 
@@ -54,6 +54,18 @@
     	health_check_interval 30s
     	health_check_timeout 60s
     }
+
+    proxy /node/name node-staking:3000 {
+        health_check /ping
+    	health_check_interval 30s
+    	health_check_timeout 60s
+    }
+
+
+    proxy /ping node-staking:3000
+
+
+    proxy / map3-node:80
 }
 
 (osm-tile-cache) {
