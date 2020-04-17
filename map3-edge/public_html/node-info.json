@@ -2,5 +2,7 @@
     "nodeName": "",
     "contractAddr": "",
     "nodePublicIp": "127.0.0.1",
-    "tileServer": "https://map.hyn.space/data/v3/{z}/{x}/{y}.pbf"
+    "tileServer": "https://map.hyn.space/data/v3/{z}/{x}/{y}.pbf",
+    "txHash": "",
+    "ownerName": ""
 }
